@@ -5,7 +5,7 @@
           <th>Email</th>
           <th>Nombre</th>
           <th>Phone</th>
-          <th>Role</th>
+          <th>Last connection</th>
           <th class="text-center"></th>
       </tr>
   </ng-template>
@@ -37,10 +37,10 @@
           </td>
           <td>
               <span class="p-column-title">
-                Role
+                Last Connection
               </span>
               <span>
-                  {{ user.role }}
+                  {{ user.lastConnection | date: 'medium' }}
               </span>
           </td>
           <td class="text-center">
