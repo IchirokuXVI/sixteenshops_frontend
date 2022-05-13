@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Product } from 'src/app/models/product.model';
+import { ProductService } from 'src/app/services/product.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'products-list',
@@ -7,9 +10,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-  constructor() { }
+  products: Product[];
+  loading: boolean;
+
+  // scroller: string;
+
+  // page: number;
+  // limit: number;
+
+  constructor(private _productServ: ProductService) {
+    this.products = [];
+    this.loading = false;
+  }
 
   ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  private loadProducts() {
+    this.loading = true;
+    this._productServ.list().pipe(finalize(() => this.loading = false)).subscribe((products) => this.products = products);
   }
 
 }
