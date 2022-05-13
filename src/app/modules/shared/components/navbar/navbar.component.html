@@ -1,0 +1,21 @@
+<mat-toolbar id="navbar" class="px-4" color="primary">
+  <span (click)="toggleSidebar()" class="clickable unselectable">
+    <i class="fas fa-bars fa-lg text-light"></i>
+  </span>
+  <a [routerLink]="['']" class="ms-5 clickable unselectable">
+    <!-- <img src="../../../../assets/img/logo.png" class="img-fluid"> -->
+    <span class="text-danger">
+      <i class="fas fa-fw fa-o"></i>
+      <i class="fas fa-fw fa-n"></i>
+      <i class="fas fa-fw fa-e"></i>
+      <i class="fas fa-fw fa-6"></i>
+    </span>
+    <span class="text-warning">
+      <i class="fas fa-fw fa-s"></i>
+      <i class="fas fa-fw fa-h"></i>
+      <i class="fas fa-fw fa-o"></i>
+      <i class="fas fa-fw fa-p"></i>
+      <i class="fas fa-fw fa-s"></i>
+    </span>
+  </a>
+</mat-toolbar>

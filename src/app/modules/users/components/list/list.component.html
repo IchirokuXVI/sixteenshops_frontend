@@ -1,0 +1,56 @@
+<!-- La animación de carga es horrible. showLoader = false la quita, pero lo suyo seria modificar la animacion -->
+<p-table #usersTable [value]="users" dataKey="_id" [loading]="loading">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Email</th>
+          <th>Nombre</th>
+          <th>Phone</th>
+          <th>Role</th>
+          <th class="text-center"></th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+      <tr>
+          <td>
+              <span class="p-column-title">
+                Email
+              </span>
+              <span>
+                  {{ user.email }}
+              </span>
+          </td>
+          <td>
+              <span class="p-column-title">
+                Name
+              </span>
+              <span>
+                  {{ user.name }}
+              </span>
+          </td>
+          <td>
+              <span class="p-column-title">
+                Phone
+              </span>
+              <span>
+                  {{ user.phone }}
+              </span>
+          </td>
+          <td>
+              <span class="p-column-title">
+                Role
+              </span>
+              <span>
+                  {{ user.role }}
+              </span>
+          </td>
+          <td class="text-center">
+              <button mat-icon-button tooltip="Users">
+                  <i class="fas fa-users"></i>
+              </button>
+              <button mat-icon-button tooltip="Edit">
+                  <i class="fas fa-pen"></i>
+              </button>
+          </td>
+      </tr>
+  </ng-template>
+</p-table>

@@ -1,1 +1,88 @@
-<p>login works!</p>
+<div class="container-fluid">
+  <div class="row min-vh-100">
+    <div class="side-text col-lg-5 col-sm-12 bg-black order-lg-1 order-2">
+      <div class="row h-100">
+        <div class="col-8 mx-auto mt-xl-25 mt-3 text-justify">
+          <p *ngIf="login; else register">
+              Login with your user or create a new one to get started !
+          </p>
+          <ng-template #register>
+            <p>
+              By creating an account you will get access to the website. Don't forget your password !
+            </p>
+          </ng-template>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mollis est sed est imperdiet tempor. Aliquam
+            pulvinar semper suscipit. Morbi facilisis, sem quis aliquam pulvinar, odio nunc tempus nisi, vel mollis augue
+            nisl ac tortor. Maecenas condimentum interdum diam sed finibus. Vivamus ut sodales lacus. Vestibulum sit amet
+            consequat diam. Sed pharetra varius ligula.
+          </p>
+          <p>
+            Aliquam eu faucibus diam. Praesent a nisl condimentum, pretium
+            lacus dapibus, aliquet est. Nunc nec nisi imperdiet, blandit felis et, vestibulum ligula. Curabitur eget
+            mattis quam. Donec eget convallis magna. Morbi sed pulvinar justo. Ut malesuada dui odio, nec cursus ante
+            rhoncus lacinia. Phasellus massa diam, rutrum et libero aliquet, pharetra tempor eros. Donec non elementum
+            massa, at porttitor felis.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-7 col-12 mt-xl-15 mt-2 order-lg-2 order-1">
+      <div class="row">
+        <div class="col-xl-4 col-10 mx-auto">
+          <div class="login-form">
+            <form #domForm [formGroup]="form" (ngSubmit)="sendForm(form)">
+              <div class="form-group">
+                <label>Email</label>
+                <input type="text" id="emailInput" formControlName="email" class="form-control" placeholder="Email" />
+                <div class="invalid-feedback" role="alert">
+                  Email already taken
+                </div>
+                <div *ngIf="form.get('email')?.hasError('required') && form.get('email')?.dirty" class="text-danger">
+                  Email is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Password</label>
+              <input type="password" formControlName="password" class="form-control" placeholder="Password" id="password" />
+                <div *ngIf="form.get('password')?.hasError('required') && form.get('password')?.dirty" class="text-danger">
+                  Password is required
+                </div>
+              </div>
+
+              <div *ngIf="!login" class="form-group">
+                <label>Confirm password</label>
+                <input type="password" formControlName="passwordConfirm" class="form-control {{ form.get('passwordConfirm')?.invalid && form.get('passwordConfirm')?.dirty ? 'is-invalid' : '' }}" placeholder="Confirm password" />
+                <div class="invalid-feedback" role="alert">
+                  Passwords doesn't match
+                </div>
+              </div>
+
+              <div class="text-danger mb-3" id="formError">
+
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 col-12 mx-auto d-flex">
+                  <button type="submit" class="btn flex-fill btn-black" id="firstButton">
+                      {{ login ? "Login" : "Create account" }}
+                  </button>
+                </div>
+                <div class="col-xl-6 col-12 mt-xl-0 mt-2 mx-auto d-flex">
+                  <button type="button" (click)="secondButtonClick()" class="btn flex-fill btn-secondary" id="secondButton">
+                      {{ login ? "Register" : "Cancel" }}
+                  </button>
+                </div>
+              </div>
+              <div class="text-success text-center mt-3" id="formMessage">
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

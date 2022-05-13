@@ -1,0 +1,24 @@
+<!--
+    Y de nuevo me da problemas tener el container en otro componente, asi que al final todo junto
+    Si se cambia el main-container a app.component.html y se mete dentro el router-outlet
+    no funciona bien, no ocupa toda la pantalla.
+-->
+<div id="main-container">
+  <app-navbar></app-navbar>
+  <!--
+      Angular Material no soporta tener el sidenav en
+      otro componente separado del container
+      https://github.com/angular/components/issues/9438
+  -->
+  <mat-sidenav-container (backdropClick)="closeSidebar()">
+      <mat-sidenav #sidenav
+      [mode]="isMobile ? 'over' : 'side'"
+      [opened]="show"
+      [autoFocus]="false">
+          <app-sidebar></app-sidebar>
+      </mat-sidenav>
+      <mat-sidenav-content class="scroller pt-4 ps-4 pe-4">
+          <router-outlet></router-outlet>
+      </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

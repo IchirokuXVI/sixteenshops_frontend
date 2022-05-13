@@ -1,0 +1,14 @@
+.bg-black, .btn-black {
+  background-color: #000 !important;
+  color: #fff;
+}
+
+@media (min-width: 1200px) {
+  .mt-xl-15 {
+      margin-top: 15% !important;
+  }
+
+  .mt-xl-25 {
+      margin-top: 25% !important;
+  }
+}

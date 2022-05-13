@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #5bb2dd;
+  box-shadow: inset 0 0 6px rgb(0 0 0 / 50%);
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 10px #5ac7fd;
+  border-radius: 10px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.unselectable {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.radius-right-0 {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.border-left-0 {
+  border-left: 0 !important;
+}
+
+// Los formularios tapan los iconos porque tienen z-index: 1
+i.pi {
+  z-index: 2;
+}
+
+form.ng-submitted input.ng-invalid {
+  border-color: #e24c4c;
+}
+
+.list-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+.save-button {
+  background-color: #5cb85c;
+  color: white;
+}
+
+// .form-control, .p-multiselect, .p-dropdown {
+//   border-radius: 0;
+//   height: 50px;
+// }
+
+// .p-multiselect-panel, .p-dropdown-panel {
+//   border-radius: 0;
+// }

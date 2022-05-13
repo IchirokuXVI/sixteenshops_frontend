@@ -1,0 +1,22 @@
+<mat-nav-list class="pt-0 unselectable">
+  <a mat-list-item [routerLink]="['']">
+      <i class="fas fa-home fa-fw"></i> <!-- fa-fw makes all icons same width (20x16 px) -->
+      <span class="ms-3">Home</span>
+  </a>
+  <a mat-list-item [routerLink]="['users']">
+      <i class="fas fa-users fa-fw"></i>
+      <span class="ms-3">Users</span>
+  </a>
+  <a mat-list-item [routerLink]="['products']">
+      <i class="fas fa-boxes-stacked fa-fw"></i>
+      <span class="ms-3">Products</span>
+  </a>
+  <a mat-list-item [routerLink]="['invoices']">
+      <i class="fas fa-receipt fa-fw"></i>
+      <span class="ms-3">Invoices</span>
+  </a>
+  <a mat-list-item (click)="logout()" class="clickable">
+      <i class="fas fa-sign-out-alt fa-fw"></i>
+      <span class="ms-3">Logout</span>
+  </a>
+</mat-nav-list>
