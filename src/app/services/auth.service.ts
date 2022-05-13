@@ -66,7 +66,7 @@ export class AuthService {
     let token = this.accessToken;
 
     if (token) {
-      return this.http.get(`${this.url}/auth/verify`).pipe(
+      return this.http.get(`${this.url}/auth/check`).pipe(
         map((res: any) => {
           if (res) {
             this.loggedSubject.next(true);
