@@ -4,13 +4,13 @@
   </span>
   <a [routerLink]="['']" class="ms-5 clickable unselectable">
     <!-- <img src="../../../../assets/img/logo.png" class="img-fluid"> -->
-    <span class="text-danger">
+    <span class="one6">
       <i class="fas fa-fw fa-o"></i>
       <i class="fas fa-fw fa-n"></i>
       <i class="fas fa-fw fa-e"></i>
       <i class="fas fa-fw fa-6"></i>
     </span>
-    <span class="text-warning">
+    <span class="shops">
       <i class="fas fa-fw fa-s"></i>
       <i class="fas fa-fw fa-h"></i>
       <i class="fas fa-fw fa-o"></i>
@@ -18,4 +18,15 @@
       <i class="fas fa-fw fa-s"></i>
     </span>
   </a>
+  <!-- Lado izquierdo de la barra -->
+  <span class="ms-auto">
+    <button mat-icon-button class="unselectable" tooltip="Usuario" (click)="userMenu.toggle($event)">
+      <mat-icon>person</mat-icon>
+    </button>
+    <button mat-icon-button class="unselectable" tooltip="Config" (click)="configMenu.toggle($event)">
+      <i class="pi pi-cog"></i>
+    </button>
+  </span>
 </mat-toolbar>
+<p-tieredMenu #userMenu [model]="userItems" [popup]="true"></p-tieredMenu>
+<p-tieredMenu #configMenu [model]="configItems" [popup]="true"></p-tieredMenu>

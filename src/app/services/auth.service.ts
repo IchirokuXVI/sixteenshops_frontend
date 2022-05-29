@@ -3,20 +3,21 @@ import { BehaviorSubject, catchError, map, Observable, of, throwError } from 'rx
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  [x: string]: any;
-
   url: string = environment.apiUrl;
 
   private accessTokenStorageName = "access_token";
   private refreshTokenStorageName = "refresh_token";
 
-  public loggedSubject: BehaviorSubject<boolean>;
+  private loggedSubject: BehaviorSubject<boolean>;
   public $logged: Observable<boolean>;
+
+  public user?: User;
 
   constructor(private http: HttpClient,
               private router: Router) {
@@ -28,6 +29,7 @@ export class AuthService {
     return this.http.post(`${this.url}/auth/login`, { email: email, password: password }).pipe(
       map((res: any) => {
         this.loggedSubject.next(true);
+        this.user = res.user;
         this.saveTokens(res.access_token, res.refresh_token);
         return res;
       })
@@ -36,6 +38,7 @@ export class AuthService {
 
   public logout(): void {
     this.removeToken();
+    this.user = undefined;
     this.loggedSubject.next(false);
     this.router.navigate(['/login']);
   }
@@ -49,6 +52,7 @@ export class AuthService {
 
       return this.http.get(`${this.url}/auth/refresh`, customOptions).pipe(
         map((res: any) => {
+          this.user = res.user;
           this.saveTokens(res.access_token, res.refresh_token);
           return res;
         }),

@@ -10,10 +10,6 @@ export class SidebarService {
 
   private _show: BehaviorSubject<boolean>;
 
-  // Me acabo de dar cuenta de que lo he comentado en ingles
-  // Pero ya se queda asi
-
-
   // The service won't use cookies and the sidebar
   // will hide or open when reaching certain breakpoint
   private _smallScreen: boolean;
@@ -68,7 +64,7 @@ export class SidebarService {
   }
 
   public get smallScreen(): boolean {
-    return this.smallScreen;
+    return this._smallScreen;
   }
 
   private isSidebarShownCookie(): boolean {

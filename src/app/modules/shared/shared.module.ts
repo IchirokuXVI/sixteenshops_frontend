@@ -30,6 +30,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages'; // Por que hacen falta 2 modulos para mensajes ?
 import { MessageModule } from 'primeng/message'; // Vaya cosa mas rara
 import { DataViewModule } from 'primeng/dataview';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 // import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 // ----------------
@@ -46,9 +47,19 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
   imports: [
     CommonModule,
     SharedRoutingModule,
-    MatSidenavModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
     MatListModule,
-    MatToolbarModule
+    MatIconModule,
+    TableModule,
+    DataViewModule,
+    TooltipModule,
+    TieredMenuModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatSlideToggleModule
   ],
   exports: [
     CommonModule,
@@ -59,7 +70,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MatIconModule,
     TableModule,
     DataViewModule,
-    TooltipModule
+    TooltipModule,
   ]
 })
 export class SharedModule { }

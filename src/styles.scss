@@ -53,16 +53,6 @@ form.ng-submitted input.ng-invalid {
   border-color: #e24c4c;
 }
 
-.list-button {
-  background-color: #1976d2;
-  color: white;
-}
-
-.save-button {
-  background-color: #5cb85c;
-  color: white;
-}
-
 // .form-control, .p-multiselect, .p-dropdown {
 //   border-radius: 0;
 //   height: 50px;
@@ -71,3 +61,6 @@ form.ng-submitted input.ng-invalid {
 // .p-multiselect-panel, .p-dropdown-panel {
 //   border-radius: 0;
 // }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
