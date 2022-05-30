@@ -1,0 +1,131 @@
+<div class="row" [formGroup]="form">
+    <div class="col-lg-8 col-md-6 col-12">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="inputNombre" class="font-weight-bold">Nombre completo</label>
+                    <input id="inputNombre" formControlName="nombre" type="text" placeholder="Nombre y apellidos"
+                        class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="inputUserName" class="font-weight-bold">Nombre de usuario*</label>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <input #inputUser id="inputUserName" formControlName="userName" type="text"
+                            placeholder="Usuario" class="form-control" [class.is-invalid]="(form.get('userName')?.touched || form.get('userName')?.dirty) && form.get('userName')?.errors"/>
+                        <span *ngIf="form.get('userName')?.dirty"
+                            class="position-absolute d-flex align-items-center unselectable mr-3">
+                            <!-- Cambia la clase del icono dependiendo de si está cargando o es válido  -->
+                            <i class="pi"
+                                [ngClass]="form.get('userName')?.pending ? 'pi-spinner pi-spin' : form.get('userName')?.valid ? 'pi-check text-success' : 'pi-times text-danger'"></i>
+                        </span>
+                    </div>
+                    <div class="invalid-form-message" *ngIf="(form.get('userName')?.touched || form.get('userName')?.dirty) && form.get('userName')?.errors">
+                        <div *ngIf="form.get('userName')?.hasError('required')">
+                            Campo requerido
+                        </div>
+                        <div *ngIf="form.get('userName')?.hasError('uniqueUsername')">
+                            Nombre de usuario en uso
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="form-group">
+                    <label for="inputPassword" class="font-weight-bold">Contraseña*</label>
+                    <input id="inputPassword" formControlName="password" type="password" placeholder="Contraseña"
+                        class="form-control" [class.is-invalid]="(form.get('password')?.touched || form.get('password')?.dirty) && form.get('password')?.errors"/>
+
+                    <div class="invalid-form-message" *ngIf="(form.get('password')?.touched || form.get('password')?.dirty) && form.get('password')?.errors">
+                        <div *ngIf="form.get('password')?.hasError('required')">
+                            Campo requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="inputEmail" class="font-weight-bold">Email</label>
+                    <input id="inputEmail" formControlName="email" type="text" placeholder="Ejemplo: sat@umitel.es"
+                        class="form-control" [class.is-invalid]="(form.get('email')?.touched || form.get('email')?.dirty) && form.get('email')?.errors"/>
+
+                    <div class="invalid-form-message" *ngIf="(form.get('email')?.touched || form.get('email')?.dirty) && form.get('email')?.errors">
+                        <div *ngIf="form.get('email')?.hasError('required')">
+                            Campo requerido
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="inputPerfil" class="font-weight-bold">Perfil</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 d-flex">
+                            <p-dropdown id="inputPerfil" formControlName="perfil" class="d-flex flex-fill"
+                                [styleClass]="'flex-fill'" [options]="perfiles || []" optionLabel="nombre"
+                                optionValue="_id"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <mat-checkbox class="ml-2 mt-2" color="warn" formControlName="isAdmin">
+                        <span class="font-weight-bod">Administrador</span>
+                    </mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-12">
+        <div class="row mb-2 mb-md-3">
+            <div class="col-12 d-flex">
+                <span class="mx-auto font-weight-bold">Avatar</span>
+            </div>
+        </div>
+        <div class="row unselectable">
+            <div class="col-md-12 order-2 order-md-1 col-6 mb-3 d-flex">
+                <div class="mx-auto align-self-center selectedUserAvatar d-flex"
+                    [class.nothingSelectedAvatar]="!selectedAvatar || imgLoading">
+                    <i class="pi pi-spinner pi-spin mx-auto my-auto" *ngIf="imgLoading"></i>
+                    <img class="img-fluid selectedUserAvatar" *ngIf="selectedAvatar && !imgLoading"
+                        [src]="sanitizeUrl(selectedAvatar)">
+                </div>
+            </div>
+            <div class="col-12 mx-auto order-1 order-md-2 mb-2 d-flex">
+                <span class="mx-auto text-secondary">Resolución mínima recomendada: 256x256</span>
+            </div>
+            <div class="col-md-11 order-3 order-md-3 col-6 mx-auto d-flex rounded">
+                <div class="row">
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mb-2 align-self-center">
+                        <div (click)="inputAvatar.click()"
+                            class="uploadAvatar rounded-circle mx-auto d-flex clickable" tooltip="Subir avatar">
+                            <mat-icon class="mx-auto my-auto text-secondary">upload</mat-icon>
+                        </div>
+                        <input #inputAvatar id="inputAvatar" (change)="selectUploadedAvatar($event)" type="file"
+                            class="d-none" accept="image/jpeg,image/jpg,image/png">
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-6 mb-2 d-flex align-self-center"
+                        *ngFor="let avatar of defaultAvatars">
+                        <img (click)="selectAvatar(avatar)"
+                            class="defaultAvatar rounded-circle mx-auto clickable"
+                            [class.activeAvatar]="selectedAvatar == avatar" [src]="avatar">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

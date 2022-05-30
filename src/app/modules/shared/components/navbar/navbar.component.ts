@@ -25,6 +25,16 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.userItems = [
       {
+        label: 'My account',
+        icon: 'pi pi-fw pi-user-edit',
+        command: (event) => {
+          // Navigate to profile
+        }
+      },
+      {
+        separator: true,
+      },
+      {
         label: 'Logout',
         icon: 'pi pi-fw pi-power-off',
         command: (event) => {

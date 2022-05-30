@@ -32,7 +32,7 @@ $dark-primary: mat.define-palette(mat.$blue-gray-palette, 700);
 $dark-accent: mat.define-palette(mat.$teal-palette, 800);
 
 // The "warn" palette is optional and defaults to red if not specified.
-$dark-warn: mat.define-palette(mat.$brown-palette, 500);
+$dark-warn: mat.define-palette(mat.$red-palette, 400);
 
 $dark-theme: mat.define-dark-theme((
  color: (
@@ -55,14 +55,13 @@ $theme: $dark-theme;
 // $bootstrap-secondary: map.get($dark-accent, 800);
 // $bootstrap-warning: map.get($dark-warn, 500);
 
+@use './app/app-theme.component' as app;
 @use './app/modules/shared/components/navbar/navbar-theme.component' as navbar;
 
 @include mat.all-component-themes($theme);
+@include app.theme($theme);
 @include navbar.theme($theme);
-
-body:not(.light-theme) {
-  @import '/node_modules/primeng/resources/themes/md-dark-indigo/theme';
-}
+@import '/node_modules/primeng/resources/themes/md-dark-indigo/theme';
 
 body.light-theme {
   // $bootstrap-primary: map.get($light-primary, 500);
@@ -71,6 +70,7 @@ body.light-theme {
 
   $theme: $light-theme;
   @include mat.all-component-themes($theme);
+  @include app.theme($theme);
   @include navbar.theme($theme);
   @import '/node_modules/primeng/resources/themes/md-light-indigo/theme';
 }

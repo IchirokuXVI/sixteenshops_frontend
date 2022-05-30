@@ -7,15 +7,7 @@
 
   $primary-palette: map.get($color-config, 'primary');
   $accent-palette: map.get($color-config, 'accent');
-
-  .one6 {
-    // Read the 500 hue from the primary color palette.
-    color: mat.get-color-from-palette($primary-palette, 50);
-  }
-
-  .shops {
-    color: mat.get-color-from-palette($accent-palette, A700);
-  }
+  $warn-palette: map.get($color-config, 'warn');
 }
 
 @mixin typography($theme) { }

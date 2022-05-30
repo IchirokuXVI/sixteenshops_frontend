@@ -1,0 +1,67 @@
+.selectedUserAvatar {
+    width: 256px;
+    height: 256px;
+    border-radius:50%;
+}
+
+.nothingSelectedAvatar {
+    background-color: #11111111;
+}
+
+img.defaultAvatar, .uploadAvatar {
+    height: 48px;
+    width: 48px;
+}
+
+#inputUserName {
+    // Quita el icono de bootstrap para que se vea el custom
+    // cuando el nombre de usuario no es válido
+    background-image: none;
+}
+
+.uploadAvatar {
+    background-color: #11111144;
+}
+
+img.activeAvatar {
+    border: 2px solid #4287f5;
+}
+
+.cropper-container {
+    max-width: 100%;
+}
+
+.cropper-image {
+    display: block;
+    max-width: 100%;
+}
+
+.cropper-crop-box, .cropper-view-box {
+    border-radius: 50%;
+}
+
+.cropper-view-box {
+    box-shadow: 0 0 0 1px #39f;
+    outline: 0;
+}
+
+@media(max-width: 1200px) and (min-width: 990px) {
+    .selectedUserAvatar {
+        width: 216px;
+        height: 216px;
+    }
+}
+
+@media(max-width: 989px) and (min-width: 460px) {
+    .selectedUserAvatar {
+        width: 192px;
+        height: 192px;
+    }
+}
+
+@media(max-width: 459px) {
+    .selectedUserAvatar {
+        width: 128px;
+        height: 128px;
+    }
+}

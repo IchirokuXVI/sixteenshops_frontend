@@ -1,0 +1,13 @@
+<div class="d-flex border-top border-bottom py-3 mb-3">
+    <div class="font-weight-normal my-auto h3">
+        <i class="fas fa-user mr-2"></i>
+        <span class="ml-2">Nuevo usuario</span>
+    </div>
+</div>
+<usuario-form-base [form]="usuarioForm"></usuario-form-base>
+<div class="d-flex my-3">
+    <button (click)="submitForm()" mat-raised-button class="save-button">
+        <i class="fas fa-plus mr-2"></i>
+        <span>Registrar</span>
+    </button>
+</div>

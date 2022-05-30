@@ -1,3 +1,4 @@
 export interface BaseResource {
-    _id?: string
+    _id?: string,
+    __v?: number
 }

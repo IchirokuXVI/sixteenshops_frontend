@@ -2,7 +2,7 @@
   <span (click)="toggleSidebar()" class="clickable unselectable">
     <i class="fas fa-bars fa-lg text-light"></i>
   </span>
-  <a [routerLink]="['']" class="ms-5 clickable unselectable">
+  <a [routerLink]="['']" class="ms-5 clickable unselectable d-none d-sm-block">
     <!-- <img src="../../../../assets/img/logo.png" class="img-fluid"> -->
     <span class="one6">
       <i class="fas fa-fw fa-o"></i>
@@ -20,11 +20,11 @@
   </a>
   <!-- Lado izquierdo de la barra -->
   <span class="ms-auto">
-    <button mat-icon-button class="unselectable" tooltip="Usuario" (click)="userMenu.toggle($event)">
+    <button mat-icon-button class="unselectable me-4" tooltip="Usuario" (click)="userMenu.toggle($event)">
       <mat-icon>person</mat-icon>
     </button>
-    <button mat-icon-button class="unselectable" tooltip="Config" (click)="configMenu.toggle($event)">
-      <i class="pi pi-cog"></i>
+    <button mat-icon-button class="unselectable" tooltip="Settings" (click)="configMenu.toggle($event)">
+      <mat-icon>settings</mat-icon>
     </button>
   </span>
 </mat-toolbar>
