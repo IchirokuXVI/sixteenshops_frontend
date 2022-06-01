@@ -4,5 +4,5 @@ export const confirmPassword: ValidatorFn = (control: AbstractControl): Validati
   const password = control.parent?.get('password');
   const confirm = control;
 
-  return password && confirm && password.value === confirm.value ? null : { isMatching: false };
+  return password && confirm && (confirm.value.length === 0 || password.value === confirm.value) ? null : { doesntMatch: true };
 };

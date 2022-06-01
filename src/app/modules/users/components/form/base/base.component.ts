@@ -1,9 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Usuario } from 'src/app/model/usuario.model';
-import { UsuariosService } from 'src/app/service/usuarios.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { CuentaComponent } from './cuenta/cuenta.component';
+import { UserService } from '../../../../../services/user.service';
+import { User } from 'src/app/models/user.model';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'usuario-form-base[form]',
@@ -14,15 +15,16 @@ export class BaseComponent implements OnInit {
 
   @Input() form!: FormGroup; // Required
   @ViewChild('formDom') formDom!: ElementRef<HTMLFormElement>;
-  @ViewChild('') tabCuenta!: CuentaComponent;
-  @Input() usuario?: Usuario; // Required
-  
+  @ViewChild('') accountTab!: CuentaComponent;
+  @Input() user?: User;
+  @Input() $submitted?: BehaviorSubject<boolean>;
+
   selectedAvatar?: string;
   userAvatar?: Blob | string | null;
 
   loadingData?: boolean;
 
-  constructor(private _usuarioServ: UsuariosService,
+  constructor(private _userServ: UserService,
               private _modalServ: BsModalService
   ) {  }
 

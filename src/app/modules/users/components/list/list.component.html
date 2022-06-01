@@ -2,6 +2,7 @@
 <p-table #usersTable [value]="users" dataKey="_id" [loading]="loading">
   <ng-template pTemplate="header">
       <tr>
+          <th></th>
           <th>Email</th>
           <th>Nombre</th>
           <th>Phone</th>
@@ -9,8 +10,13 @@
           <th class="text-center"></th>
       </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-user>
+  <ng-template pTemplate="body" let-user let-i="rowIndex">
       <tr>
+          <td>
+              <span>
+                  <img class="rounded-circle" [src]="getAvatarPath(user)">
+              </span>
+          </td>
           <td>
               <span class="p-column-title">
                 Email
@@ -44,13 +50,14 @@
               </span>
           </td>
           <td class="text-center">
-            <button mat-icon-button color="primary" tooltip="Edit">
+            <button mat-icon-button color="primary" tooltip="Edit" [routerLink]="['.', user._id, 'edit']">
               <i class="fas fa-pen"></i>
             </button>
-            <button mat-icon-button color="warn" tooltip="Delete">
+            <button #deleteButton mat-icon-button color="warn" tooltip="Delete" (click)="deleteUser(deleteButton, user, i)">
               <i class="fas fa-trash"></i>
             </button>
           </td>
       </tr>
   </ng-template>
 </p-table>
+<p-confirmPopup [autoZIndex]="false" [style]="{ zIndex: '2000' }" [reverse]="true"></p-confirmPopup>

@@ -17,13 +17,13 @@ export class ThemeService {
 
   public setTheme(theme: string): void {
     this.theme.next(theme);
-    this._cookieServ.set("currentTheme", theme);
+    localStorage.setItem("currentTheme", theme);
 
     // Cannot re-assign PrimeNG css so the page needs to reload
     // location.reload();
   }
 
-  private getCurrentTheme(): string {
-    return this._cookieServ.get("currentTheme");
+  private getCurrentTheme(): string | null {
+    return localStorage.getItem("currentTheme");
   }
 }

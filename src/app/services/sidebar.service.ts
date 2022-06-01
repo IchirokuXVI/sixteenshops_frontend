@@ -43,7 +43,7 @@ export class SidebarService {
     // because it would be weird to start
     // the app with the sidebar open
     if (!this._smallScreen)
-      this._cookieServ.set("showSidebar", String(!shown));
+      localStorage.setItem("showSidebar", String(!shown));
   }
 
   public setState(state: boolean): void {
@@ -52,7 +52,7 @@ export class SidebarService {
     // because it would be weird to start
     // the app with the sidebar open
     if (!this._smallScreen)
-      this._cookieServ.set("showSidebar", String(state));
+      localStorage.setItem("showSidebar", String(state));
   }
 
   public restoreState() {
@@ -68,6 +68,6 @@ export class SidebarService {
   }
 
   private isSidebarShownCookie(): boolean {
-    return this._cookieServ.get("showSidebar") === 'false' ? false : true;
+    return localStorage.getItem("showSidebar") === 'false' ? false : true;
   }
 }

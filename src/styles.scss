@@ -1,5 +1,8 @@
 * {
   box-sizing: border-box;
+  transition: background-color 0.3s;
+    transition-timing-function: ease, ease, ease, ease, cubic-bezier(0.64, 0.09, 0.08, 1);
+    transition-delay: 0s, 0s, 0s, 0s, 0s;
 }
 
 body, html {
@@ -49,8 +52,10 @@ i.pi {
   z-index: 2;
 }
 
-form.ng-submitted input.ng-invalid {
-  border-color: #e24c4c;
+.invalid-form-message {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
 }
 
 // .form-control, .p-multiselect, .p-dropdown {

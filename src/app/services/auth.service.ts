@@ -17,19 +17,22 @@ export class AuthService {
   private loggedSubject: BehaviorSubject<boolean>;
   public $logged: Observable<boolean>;
 
-  public user?: User;
+  public userSubject: BehaviorSubject<User | undefined>
+  public $user: Observable<User | undefined>;
 
   constructor(private http: HttpClient,
               private router: Router) {
     this.loggedSubject = new BehaviorSubject<boolean>(this.refreshToken ? true : false);
     this.$logged = this.loggedSubject.asObservable();
+    this.userSubject = new BehaviorSubject<User | undefined>(undefined);
+    this.$user = this.userSubject.asObservable();
   }
 
   public login(email: string, password: string) {
     return this.http.post(`${this.url}/auth/login`, { email: email, password: password }).pipe(
       map((res: any) => {
         this.loggedSubject.next(true);
-        this.user = res.user;
+        this.userSubject.next(res.user);
         this.saveTokens(res.access_token, res.refresh_token);
         return res;
       })
@@ -38,9 +41,13 @@ export class AuthService {
 
   public logout(): void {
     this.removeToken();
-    this.user = undefined;
+    this.userSubject.next(undefined);
     this.loggedSubject.next(false);
     this.router.navigate(['/login']);
+  }
+
+  public setLoggedUser(user: User): void {
+    this.userSubject.next(user);
   }
 
   public refreshTokens(): Observable<any> {
@@ -52,7 +59,8 @@ export class AuthService {
 
       return this.http.get(`${this.url}/auth/refresh`, customOptions).pipe(
         map((res: any) => {
-          this.user = res.user;
+          this.userSubject.next(res.user);
+          console.log(res)
           this.saveTokens(res.access_token, res.refresh_token);
           return res;
         }),
@@ -73,6 +81,7 @@ export class AuthService {
       return this.http.get(`${this.url}/auth/check`).pipe(
         map((res: any) => {
           if (res) {
+            this.userSubject.next(res);
             this.loggedSubject.next(true);
             return true;
           } else {
@@ -108,5 +117,9 @@ export class AuthService {
 
   get refreshToken(): string | null {
     return localStorage.getItem(this.refreshTokenStorageName);
+  }
+
+  get user(): User | undefined {
+    return this.userSubject.value;
   }
 }

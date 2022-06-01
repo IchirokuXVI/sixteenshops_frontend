@@ -5,18 +5,18 @@
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <mat-icon>account_circle</mat-icon>
-                        <span class="ml-1">Cuenta</span>
+                        <span class="ms-2">Account</span>
                       </ng-template>
                     <ng-template matTabContent>
                         <div class="tab-container">
-                            <usuario-form-cuenta #tabCuenta [form]="form" [usuario]="usuario" (loadingData)="loadingData"></usuario-form-cuenta>
+                            <usuario-form-cuenta #accountTab [form]="form" [user]="user" (loadingData)="loadingData" [$submitted]="$submitted"></usuario-form-cuenta>
                         </div>
                     </ng-template>
                 </mat-tab>
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <mat-icon>bar_chart</mat-icon>
-                        <span class="ml-1">Permisos</span>
+                        <span class="ms-2">Permissions</span>
                     </ng-template>
                     <ng-template matTabContent>
                         <div class="tab-container">

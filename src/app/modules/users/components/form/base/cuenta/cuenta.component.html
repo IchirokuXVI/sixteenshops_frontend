@@ -1,92 +1,72 @@
 <div class="row" [formGroup]="form">
     <div class="col-lg-8 col-md-6 col-12">
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-12">
-                <div class="form-group">
-                    <label for="inputNombre" class="font-weight-bold">Nombre completo</label>
-                    <input id="inputNombre" formControlName="nombre" type="text" placeholder="Nombre y apellidos"
-                        class="form-control" />
-                </div>
+              <div class="p-inputgroup">
+                <span class="p-float-label">
+                    <input formControlName="name" id="inputName" type="text" pInputText>
+                    <label for="inputName">Full name</label>
+                </span>
+              </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="form-group">
-                    <label for="inputUserName" class="font-weight-bold">Nombre de usuario*</label>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <input #inputUser id="inputUserName" formControlName="userName" type="text"
-                            placeholder="Usuario" class="form-control" [class.is-invalid]="(form.get('userName')?.touched || form.get('userName')?.dirty) && form.get('userName')?.errors"/>
-                        <span *ngIf="form.get('userName')?.dirty"
-                            class="position-absolute d-flex align-items-center unselectable mr-3">
-                            <!-- Cambia la clase del icono dependiendo de si está cargando o es válido  -->
-                            <i class="pi"
-                                [ngClass]="form.get('userName')?.pending ? 'pi-spinner pi-spin' : form.get('userName')?.valid ? 'pi-check text-success' : 'pi-times text-danger'"></i>
-                        </span>
-                    </div>
-                    <div class="invalid-form-message" *ngIf="(form.get('userName')?.touched || form.get('userName')?.dirty) && form.get('userName')?.errors">
-                        <div *ngIf="form.get('userName')?.hasError('required')">
-                            Campo requerido
-                        </div>
-                        <div *ngIf="form.get('userName')?.hasError('uniqueUsername')">
-                            Nombre de usuario en uso
-                        </div>
-                    </div>
+        <div class="row mb-4">
+            <div class="col-12">
+              <div class="p-inputgroup">
+                <span class="p-input-icon-left p-float-label">
+                    <i class="pi pi-envelope" *ngIf="!form.get('email')?.dirty"></i>
+                    <i class="pi pi-spin pi-spinner" *ngIf="form.get('email')?.pending"></i>
+                    <i class="pi feedbackIconEmail" [ngClass]="form.get('email')?.errors ? 'pi-times' : 'pi-check'" *ngIf="form.get('email')?.dirty && !form.get('email')?.pending"></i>
+                    <!-- radius-right-0 used to fix styles -->
+                    <input formControlName="email" id="inputEmail" type="text" required pInputText>
+                    <label for="inputEmail">Email*</label>
+                </span>
+              </div>
+              <div class="invalid-form-message" *ngIf="(submitted || form.get('email')?.touched || form.get('email')?.dirty) && form.get('email')?.errors">
+                <div *ngIf="form.get('email')?.hasError('required')">
+                    Required field
                 </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="form-group">
-                    <label for="inputPassword" class="font-weight-bold">Contraseña*</label>
-                    <input id="inputPassword" formControlName="password" type="password" placeholder="Contraseña"
-                        class="form-control" [class.is-invalid]="(form.get('password')?.touched || form.get('password')?.dirty) && form.get('password')?.errors"/>
-
-                    <div class="invalid-form-message" *ngIf="(form.get('password')?.touched || form.get('password')?.dirty) && form.get('password')?.errors">
-                        <div *ngIf="form.get('password')?.hasError('required')">
-                            Campo requerido
-                        </div>
-                    </div>
-                </div>
+                <div *ngIf="form.get('email')?.hasError('uniqueEmail')">
+                    Email is already in use
+                  </div>
+              </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label for="inputEmail" class="font-weight-bold">Email</label>
-                    <input id="inputEmail" formControlName="email" type="text" placeholder="Ejemplo: sat@umitel.es"
-                        class="form-control" [class.is-invalid]="(form.get('email')?.touched || form.get('email')?.dirty) && form.get('email')?.errors"/>
-
-                    <div class="invalid-form-message" *ngIf="(form.get('email')?.touched || form.get('email')?.dirty) && form.get('email')?.errors">
-                        <div *ngIf="form.get('email')?.hasError('required')">
-                            Campo requerido
-                        </div>
-                    </div>
-                </div>
+        <div class="row mb-4">
+          <div class="col-12 col-md-6">
+            <div class="p-inputgroup">
+              <span class="p-float-label">
+                  <input formControlName="password" id="inputPassword" type="password" pInputText>
+                  <label for="inputPassword">Password*</label>
+              </span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-12">
-                            <label for="inputPerfil" class="font-weight-bold">Perfil</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 d-flex">
-                            <p-dropdown id="inputPerfil" formControlName="perfil" class="d-flex flex-fill"
-                                [styleClass]="'flex-fill'" [options]="perfiles || []" optionLabel="nombre"
-                                optionValue="_id"></p-dropdown>
-                        </div>
-                    </div>
-                </div>
+            <div class="invalid-form-message" *ngIf="(submitted || form.get('password')?.touched || form.get('password')?.dirty) && form.get('password')?.errors">
+              <div *ngIf="form.get('password')?.hasError('required')">
+                  Required field
+              </div>
             </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <div class="p-inputgroup">
+              <span class="p-float-label">
+                  <input formControlName="passwordConfirm" id="inputPasswordConfirm" type="password" pInputText>
+                  <label for="inputPasswordConfirm">Confirm Password</label>
+              </span>
+            </div>
+            <div class="invalid-form-message" *ngIf="(submitted || form.get('passwordConfirm')?.touched || form.get('passwordConfirm')?.dirty) && form.get('passwordConfirm')?.errors">
+              <div *ngIf="form.get('passwordConfirm')?.hasError('doesntMatch')">
+                Passwords do not match
+              </div>
+            </div>
+          </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <div class="form-group">
-                    <mat-checkbox class="ml-2 mt-2" color="warn" formControlName="isAdmin">
-                        <span class="font-weight-bod">Administrador</span>
-                    </mat-checkbox>
-                </div>
+              <div class="col-12 d-flex">
+                  <p-dropdown id="inputRole" formControlName="role" class="d-flex flex-fill"
+                      [styleClass]="'flex-fill'" [options]="roles || []" optionLabel="name"
+                      optionValue="_id" placeholder="Select a role..."></p-dropdown>
+              </div>
             </div>
         </div>
     </div>
@@ -106,7 +86,7 @@
                 </div>
             </div>
             <div class="col-12 mx-auto order-1 order-md-2 mb-2 d-flex">
-                <span class="mx-auto text-secondary">Resolución mínima recomendada: 256x256</span>
+                <span class="mx-auto text-secondary">Recommended resolution: 256x256px</span>
             </div>
             <div class="col-md-11 order-3 order-md-3 col-6 mx-auto d-flex rounded">
                 <div class="row">

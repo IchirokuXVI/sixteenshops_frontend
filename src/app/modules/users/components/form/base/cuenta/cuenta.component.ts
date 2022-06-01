@@ -2,12 +2,13 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { forkJoin, finalize, Observable, of, timer, switchMap, map } from 'rxjs';
-import { Perfil } from 'src/app/model/perfil.model';
-import { Usuario } from 'src/app/model/usuario.model';
-import { CropperModalComponent } from 'src/app/module/shared/component/cropper-modal/cropper-modal.component';
-import { PerfilesService } from 'src/app/service/perfiles.service';
-import { UsuariosService } from 'src/app/service/usuarios.service';
+import { forkJoin, finalize, Observable, of, timer, switchMap, map, BehaviorSubject } from 'rxjs';
+import { RoleService } from 'src/app/services/role.service';
+import { UserService } from 'src/app/services/user.service';
+import { Role } from 'src/app/models/role.model';
+import { User } from 'src/app/models/user.model';
+import { CropperModalComponent } from 'src/app/modules/shared/components/cropper-modal/cropper-modal.component';
+import { confirmPassword } from 'src/app/modules/shared/validators/confirm-password.validator';
 
 @Component({
   selector: 'usuario-form-cuenta[form]',
@@ -17,97 +18,99 @@ import { UsuariosService } from 'src/app/service/usuarios.service';
 export class CuentaComponent implements OnInit {
 
   @Input() form!: FormGroup; // Required
-  @Input() usuario?: Usuario; // Required
+  @Input() user?: User; // Required
 
   @Output() loadingData: EventEmitter<boolean>;
 
   @ViewChild('cropperModal') cropperModal!: any;
   @ViewChild('copperImg') cropperImg!: ElementRef<HTMLImageElement>
 
-  perfiles: Perfil[];
+  roles: Role[];
   imgLoading: boolean;
   defaultAvatars: string[];
-  selectedAvatar?: string;
+  selectedAvatar: string;
   userAvatar?: Blob | string | null;
 
   inputUser: FormControl;
+  @Input() $submitted?: BehaviorSubject<boolean>;
 
   avatarStorage: string;
 
-  constructor(private _perfilServ: PerfilesService,
-              private _usuarioServ: UsuariosService,
+  constructor(private _roleServ: RoleService,
+              private _userServ: UserService,
               private _modalServ: BsModalService,
               private sanitizer: DomSanitizer
   ) {
     this.loadingData = new EventEmitter();
     this.imgLoading = false;
 
-    this.avatarStorage = this._usuarioServ.avatarStoragePath;
+    this.avatarStorage = this._userServ.defaultAvatarsPath;
 
     this.defaultAvatars = [
-      this.avatarStorage + "user.png",
-      this.avatarStorage + "avatar1.png",
-      this.avatarStorage + "avatar2.png",
-      this.avatarStorage + "avatar3.png",
-      this.avatarStorage + "avatar4.png",
-      this.avatarStorage + "avatar5.png",
-      this.avatarStorage + "avatar6.png",
-      this.avatarStorage + "avatar7.png",
-      this.avatarStorage + "avatar8.png",
-      this.avatarStorage + "avatar9.png",
-      this.avatarStorage + "avatar10.png",
+      "user.png",
+      "avatar1.png",
+      "avatar2.png",
+      "avatar3.png",
+      "avatar4.png",
+      "avatar5.png",
+      "avatar6.png",
+      "avatar7.png",
+      "avatar8.png",
+      "avatar9.png",
+      "avatar10.png",
     ];
+
+    this.defaultAvatars = this.defaultAvatars.map((avatar) => this.avatarStorage + avatar);
 
     this.inputUser = new FormControl('', Validators.required);
 
-    this.perfiles = [
-      {
-        nombre: 'Sin perfil',
-      }
-    ];
+    this.selectedAvatar = this.defaultAvatars[0];
+
+    this.roles = [];
   }
 
   ngOnInit(): void {
-    this.form.addControl('nombre', new FormControl(), { emitEvent: false });
-    this.form.addControl('userName', new FormControl('', Validators.required, this.uniqueUsername()), { emitEvent: false });
+    this.form.addControl('name', new FormControl(), { emitEvent: false });
+    this.form.addControl('email', new FormControl('', Validators.required, this.uniqueEmail()), { emitEvent: false });
 
     let passwordControl;
 
-    // Solo requerido si es un nuevo usuario
-    if (this.usuario)
+    // Only required for new users
+    if (this.user)
       passwordControl = new FormControl();
     else
       passwordControl = new FormControl('', Validators.required);
 
     this.form.addControl('password', passwordControl, { emitEvent: false });
-    this.form.addControl('email', new FormControl(), { emitEvent: false });
-    this.form.addControl('perfil', new FormControl(), { emitEvent: false });
-    this.form.addControl('isAdmin', new FormControl(), { emitEvent: false });
+    this.form.addControl('passwordConfirm', new FormControl('', { validators: confirmPassword, updateOn: 'change' }), { emitEvent: false });
+    this.form.addControl('role', new FormControl(), { emitEvent: false });
     this.form.addControl('avatar', new FormControl(), { emitEvent: false });
 
     this.selectAvatar(this.defaultAvatars[0]);
 
-    if (this.usuario) {
-      this.form.patchValue(this.usuario);
+    if (this.user) {
+      this.form.patchValue(this.user);
 
-      if (this.usuario.avatar)
-        this.selectAvatar(this.avatarStorage + this.usuario.avatar);
+      if (this.user.avatar)
+        this.selectAvatar(this.avatarStorage + this.user.avatar);
+      else
+        this.selectedAvatar = this._userServ.getAvatarPath(this.user);
     }
 
     // Load data needed for the form
     this.loadingData.next(true);
     forkJoin(
       {
-        perfiles: this._perfilServ.list()
+        roles: this._roleServ.list()
       }
     ).pipe(
       finalize(() => this.loadingData.next(false))
     ).subscribe((data) => {
       // Cannot replace array because it has one option by default
-      this.perfiles.push(...data.perfiles);
+      this.roles = data.roles;
 
-      if (this.usuario) {
-        this.form.get('perfil')?.setValue(this.usuario.perfil?._id);
+      if (this.user) {
+        this.form.get('role')?.setValue(this.user.role);
       }
     });
   }
@@ -128,7 +131,7 @@ export class CuentaComponent implements OnInit {
     event.target.value = null;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("Imagen demasiado grande (5MB max)");
+      alert("Image too large (5MB maximum)");
       return;
     }
 
@@ -166,15 +169,15 @@ export class CuentaComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
-  uniqueUsername(): AsyncValidatorFn {
+  uniqueEmail(): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       // Si no se ha llegado a modificar el input no puede ser inválido
-      if (control.pristine || control.value == this.usuario?.userName)
+      if (control.pristine || control.value == this.user?.email)
         return of(null);
 
       return timer(500).pipe(switchMap(()=>{
-        return this._usuarioServ.checkUser(control.value).pipe(
-          map((taken) => taken ? { uniqueUsername: "Nombre de usuario en uso" } : null),
+        return this._userServ.checkEmail(control.value).pipe(
+          map((taken) => taken ? { uniqueEmail: "Email is already in use" } : null),
         )
       }));
     }
@@ -198,4 +201,8 @@ export class CuentaComponent implements OnInit {
   //     )
   //   }
   // }
+
+  get submitted() {
+    return this.$submitted?.value;
+  }
 }

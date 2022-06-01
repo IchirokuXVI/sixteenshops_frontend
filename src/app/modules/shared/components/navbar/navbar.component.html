@@ -21,7 +21,8 @@
   <!-- Lado izquierdo de la barra -->
   <span class="ms-auto">
     <button mat-icon-button class="unselectable me-4" tooltip="Usuario" (click)="userMenu.toggle($event)">
-      <mat-icon>person</mat-icon>
+      <mat-icon *ngIf="!loggedUser">person</mat-icon>
+      <img #userAvatar class="rounded-circle" [src]="avatarPath" *ngIf="loggedUser">
     </button>
     <button mat-icon-button class="unselectable" tooltip="Settings" (click)="configMenu.toggle($event)">
       <mat-icon>settings</mat-icon>

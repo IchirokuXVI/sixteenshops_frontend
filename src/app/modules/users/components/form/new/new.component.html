@@ -1,13 +1,13 @@
 <div class="d-flex border-top border-bottom py-3 mb-3">
     <div class="font-weight-normal my-auto h3">
         <i class="fas fa-user mr-2"></i>
-        <span class="ml-2">Nuevo usuario</span>
+        <span class="ms-2">New user</span>
     </div>
 </div>
-<usuario-form-base [form]="usuarioForm"></usuario-form-base>
+<usuario-form-base [form]="usuarioForm" [$submitted]="submitted"></usuario-form-base>
 <div class="d-flex my-3">
-    <button (click)="submitForm()" mat-raised-button class="save-button">
-        <i class="fas fa-plus mr-2"></i>
-        <span>Registrar</span>
-    </button>
+  <button mat-raised-button class="ms-3" color="accent" (click)="submitForm()">
+    <i class="fas fa-plus me-2"></i>
+    <span>Register</span>
+  </button>
 </div>
