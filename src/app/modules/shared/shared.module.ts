@@ -20,6 +20,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 
 // ----------------
 //     PrimeNG
@@ -32,6 +34,7 @@ import { MessagesModule } from 'primeng/messages'; // Por que hacen falta 2 modu
 import { MessageModule } from 'primeng/message'; // Vaya cosa mas rara
 import { DataViewModule } from 'primeng/dataview';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { ToastModule } from 'primeng/toast';
 // ConfirmPopup modified by me because it had a bug
 // https://github.com/primefaces/primeng/issues/10343
 // https://github.com/primefaces/primeng/issues/10285
@@ -84,7 +87,12 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     InputTextModule,
     MessageModule,
     MessagesModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    MatSlideToggleModule,
+    MatCardModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    ToastModule
   ]
 })
 export class SharedModule { }

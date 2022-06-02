@@ -42,7 +42,7 @@ export class BaseResourceService<T extends BaseResource> {
 
   /**
    * Process data to build a multipart/form-data form
-   * 
+   *
    * @param data any
    * @returns FormData
    */
@@ -52,11 +52,47 @@ export class BaseResourceService<T extends BaseResource> {
     Object.keys(data).forEach((key)=>{
       if(data[key] && data[key].name) {
         form.set(key, data[key], data[key].name);
-      } else if (data[key]) {
-        form.set(key, data[key]);
+      } else if (data[key] !== undefined && data[key] !== null) {
+        // let toSet: any = data[key];
+
+        // if (typeof(toSet) === 'object')
+        //   toSet = JSON.stringify(toSet);
+
+        if (this.validProcessableObject(data[key]) && typeof(data[key]) === 'object') {
+          console.log(data[key] instanceof Blob)
+          this.recursiveMultipart(key, data[key], form);
+        } else {
+          form.set(key, data[key]);
+        }
       }
     });
 
     return form;
   }
+
+  // Formateado con puntos
+  protected recursiveMultipart(fieldname: string, data: Object, formData: FormData) {
+    for (let [key, value] of Object.entries(data)) {
+      if (this.validProcessableObject(value) && typeof(value) === 'object') {
+        this.recursiveMultipart(fieldname + '.' + key, value, formData);
+      } else {
+        formData.set(fieldname + '.' + key, value);
+      }
+    }
+  }
+
+  private validProcessableObject(value: Object) {
+    return !(value instanceof Date || value instanceof Blob || value instanceof File || value instanceof Image);
+  }
+
+  // Formateado con corchetes
+  // protected recursiveMultipart(fieldname: string, data: Object, formData: FormData, array: boolean = false) {
+  //   for (let [key, value] of Object.entries(data)) {
+  //     if (!(value instanceof Date) && (typeof(value) === 'object' || Array.isArray(value))) {
+  //       this.recursiveMultipart((array ? fieldname + '[]' : fieldname + '[' + key + ']'), value, formData, Array.isArray(value));
+  //     } else {
+  //       formData.set(fieldname + '[' + key + ']', value);
+  //     }
+  //   }
+  // }
 }

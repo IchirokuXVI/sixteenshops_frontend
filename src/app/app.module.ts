@@ -7,8 +7,10 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TokenService } from './interceptors/token.service';
-import { ConfirmationService as BaseConfirmationService } from 'primeng/api';
+import { ConfirmationService as BaseConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmationService } from './services/primeng/confirmation.service';
+import { SharedModule } from './modules/shared/shared.module';
+import { UnauthorizedService } from './interceptors/unauthorized.service';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { ConfirmationService } from './services/primeng/confirmation.service';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    SharedModule,
     HttpClientModule,
     AppRoutingModule
   ],
@@ -26,7 +29,13 @@ import { ConfirmationService } from './services/primeng/confirmation.service';
       useClass: TokenService,
       multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedService,
+      multi: true
+    },
     BsModalService,
+    MessageService,
     ConfirmationService,
     {
       // Cuando se vaya a usar un ConfirmationService original

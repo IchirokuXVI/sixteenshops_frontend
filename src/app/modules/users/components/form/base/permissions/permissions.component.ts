@@ -1,15 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { Permission } from 'src/app/models/permission.model';
+import { User } from 'src/app/models/user.model';
+import { PermissionService } from 'src/app/services/permission.service';
+import { finalize } from 'rxjs';
 
 @Component({
-  selector: 'app-permissions',
+  selector: 'usuario-form-permissions[form]',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss']
 })
 export class PermissionsComponent implements OnInit {
 
-  constructor() { }
+  @Input() form!: FormGroup; // Required
+  @Input() user?: User; // Required
 
-  ngOnInit(): void {
+  @Output() loadingData: EventEmitter<boolean>;
+
+  permissions: Permission[];
+  permissionsFormArray: FormArray;
+
+  constructor(private _permissionServ: PermissionService) {
+    this.loadingData = new EventEmitter();
+    this.permissions = [];
+
+    this.permissionsFormArray = new FormArray([]);
   }
 
+  ngOnInit(): void {
+    this.loadPermissions();
+
+    this.form.addControl('permissions', this.permissionsFormArray);
+  }
+
+  loadPermissions() {
+    this.loadingData.next(true);
+
+    this._permissionServ.list().pipe(
+      finalize(() => this.loadingData.next(false))
+    ).subscribe((permissions) => {
+      this.permissions = permissions;
+
+      for (let permission of permissions) {
+        let defaultVal = false;
+
+        if (this.user && this.user.permissions) {
+          defaultVal = this.user.permissions.findIndex((item) => item === permission._id) !== -1;
+        }
+
+        this.permissionsFormArray.push(new FormGroup({
+          permission: new FormControl(permission._id),
+          allow: new FormControl(defaultVal)
+        }));
+      }
+    });
+  }
 }

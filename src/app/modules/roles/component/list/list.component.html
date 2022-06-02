@@ -1,0 +1,56 @@
+<p-table #usersTable [value]="roles" dataKey="_id" [loading]="loading">
+  <ng-template pTemplate="caption">
+    <div class="d-flex flex-row align-items-center">
+        List of roles
+        <button class="ms-auto" mat-raised-button color="accent" (click)="openModalAdd()">
+          <i class="fas fa-plus fa-sm me-2"></i>
+          <span>Add new role</span>
+        </button>
+    </div>
+</ng-template>
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Name</th>
+          <th>Created at</th>
+          <th>Updated at</th>
+          <th class="text-center"></th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-role let-i="rowIndex">
+    <tr>
+      <td>
+        <span class="p-column-title">
+          Name
+        </span>
+        <span>
+            {{ role.name }}
+        </span>
+      </td>
+      <td>
+        <span class="p-column-title">
+          Created at
+        </span>
+        <span>
+            {{ role.createdAt | date: 'medium' }}
+        </span>
+      </td>
+      <td>
+        <span class="p-column-title">
+          Updated at
+        </span>
+        <span>
+          {{ role.updatedAt | date: 'medium' }}
+        </span>
+      </td>
+      <td class="text-center">
+        <button mat-icon-button color="primary" tooltip="Edit" (click)="openModalUpdate(role)">
+          <i class="fas fa-pen"></i>
+        </button>
+        <button #deleteButton mat-icon-button color="warn" tooltip="Delete" (click)="deleteRole(deleteButton, role, i)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmPopup [autoZIndex]="false" [style]="{ zIndex: '2000' }" [reverse]="true"></p-confirmPopup>

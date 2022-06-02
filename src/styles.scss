@@ -58,6 +58,18 @@ i.pi {
   font-size: 80%;
 }
 
+.p-menuitem span.p-menuitem-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-dialog {
+  & .modal-header, .modal-footer {
+    border: 0;
+  }
+}
+
 // .form-control, .p-multiselect, .p-dropdown {
 //   border-radius: 0;
 //   height: 50px;

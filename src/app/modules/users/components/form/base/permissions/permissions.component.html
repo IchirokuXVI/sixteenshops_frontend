@@ -1,1 +1,11 @@
-<p>permissions works!</p>
+<div class="row" [formGroup]="form">
+  <div class="col-12" formArrayName="permissions">
+    <div class="row">
+      <div class="col-xl-3 col-sm-4" *ngFor="let permission of permissions; let i = index" [formGroupName]="i">
+        <mat-slide-toggle color="primary" formControlName="allow">
+          {{ permission.description }}
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+</div>

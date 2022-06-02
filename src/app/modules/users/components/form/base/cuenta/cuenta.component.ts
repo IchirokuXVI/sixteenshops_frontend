@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { forkJoin, finalize, Observable, of, timer, switchMap, map, BehaviorSubject } from 'rxjs';
@@ -35,6 +35,8 @@ export class CuentaComponent implements OnInit {
   @Input() $submitted?: BehaviorSubject<boolean>;
 
   avatarStorage: string;
+
+  selectedRole?: string;
 
   constructor(private _roleServ: RoleService,
               private _userServ: UserService,
@@ -110,9 +112,21 @@ export class CuentaComponent implements OnInit {
       this.roles = data.roles;
 
       if (this.user) {
-        this.form.get('role')?.setValue(this.user.role);
+        setTimeout(() => this.form.get('role')?.setValue(this.user?.role, { emitEvent: false }))
       }
     });
+  }
+
+  updatePermissions(event: any) {
+    console.log(event)
+    if (this.user) {
+      let role = this.roles.find((item) => item._id == event.value);
+      if (role && role.permissions) {
+        for (let control of (this.form.get('permissions') as FormArray).controls) {
+          control.patchValue({ allow: role.permissions.findIndex((item) => item == control.value.permission) !== -1 });
+        }
+      }
+    }
   }
 
   selectAvatar(avatar: string) {

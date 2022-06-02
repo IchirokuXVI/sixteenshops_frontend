@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="row mb-4">
-          <div class="col-12 col-md-6">
+          <div class="col-12 mb-4 mb-md-0 col-md-6">
             <div class="p-inputgroup">
               <span class="p-float-label">
                   <input formControlName="password" id="inputPassword" type="password" pInputText>
@@ -60,22 +60,17 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row mb-sm-4">
             <div class="col-12">
               <div class="col-12 d-flex">
-                  <p-dropdown id="inputRole" formControlName="role" class="d-flex flex-fill"
+                  <p-dropdown id="inputRole" (onChange)="updatePermissions($event)" formControlName="role" class="d-flex flex-fill"
                       [styleClass]="'flex-fill'" [options]="roles || []" optionLabel="name"
-                      optionValue="_id" placeholder="Select a role..."></p-dropdown>
+                      optionValue="_id" placeholder="Select a role..." appendTo="body"></p-dropdown>
               </div>
             </div>
         </div>
     </div>
     <div class="col-lg-4 col-md-6 col-12">
-        <div class="row mb-2 mb-md-3">
-            <div class="col-12 d-flex">
-                <span class="mx-auto font-weight-bold">Avatar</span>
-            </div>
-        </div>
         <div class="row unselectable">
             <div class="col-md-12 order-2 order-md-1 col-6 mb-3 d-flex">
                 <div class="mx-auto align-self-center selectedUserAvatar d-flex"

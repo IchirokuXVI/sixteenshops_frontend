@@ -78,6 +78,11 @@ form.ng-submitted input.ng-invalid {
   border-color: #b00020;
 }
 
+.modal-content {
+  background-color: $dark-background-color !important;
+  color: #fff !important;
+}
+
 body.light-theme {
   // $bootstrap-primary: map.get($light-primary, 500);
   // $bootstrap-secondary: map.get($light-accent, 800);
@@ -95,6 +100,11 @@ body.light-theme {
 
   form.ng-submitted input.ng-invalid {
     border-color: #f44435;
+  }
+
+  .modal-content {
+    background-color: $light-background-color !important;
+    color: #000 !important;
   }
 
   @include mat.all-component-themes($theme);

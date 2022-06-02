@@ -1,7 +1,9 @@
 <div class="d-flex border-top border-bottom py-3 mb-3">
-    <div class="font-weight-normal my-auto h3">
-        <i class="fas fa-user me-2"></i>
-        <span class="ms-2">Editing user {{ user?.email }}</span>
+    <div class="font-weight-normal my-auto h3 d-flex">
+        <i *ngIf="!profile" class="fas fa-user me-2"></i>
+        <span class="ms-2" *ngIf="!profile">Editing user {{ user?.email }}</span>
+        <img class="align-self-center rounded-circle" *ngIf="profile" [src]="avatarPath">
+        <span class="ms-2" *ngIf="profile">Your account</span>
     </div>
 </div>
 <usuario-form-base *ngIf="user" [form]="usuarioForm" [user]="user" [$submitted]="submitted"></usuario-form-base>

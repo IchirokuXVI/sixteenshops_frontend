@@ -22,6 +22,8 @@ export class EditComponent implements OnInit {
   @ViewChild(BaseComponent) baseComp!: BaseComponent;
   submitted: BehaviorSubject<boolean>;
 
+  profile: boolean;
+
   constructor(private _userServ: UserService,
               private _authServ: AuthService,
               private route: ActivatedRoute,
@@ -30,11 +32,17 @@ export class EditComponent implements OnInit {
     this.usuarioForm = new FormGroup({});
     this.loadingSubmit = false;
     this.submitted = new BehaviorSubject<boolean>(false);
+    this.profile = false;
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this._userServ.get(params['id']).subscribe((usuario) => this.user = usuario)
+      let id = params['id'];
+      if (!params['id']) {
+        this.profile = true;
+        id = this._authServ.user?._id;
+      }
+      this._userServ.get(id).subscribe((usuario) => this.user = usuario)
     });
   }
 
@@ -73,4 +81,9 @@ export class EditComponent implements OnInit {
     });
   }
 
+  get avatarPath() {
+    return this._userServ.getAvatarPath(this._authServ.user!, 'icon');
+  }
+
 }
+

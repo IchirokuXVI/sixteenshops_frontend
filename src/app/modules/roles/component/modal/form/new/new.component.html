@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h4 class="modal-title my-auto">Create new role</h4>
+  <button mat-icon-button (click)="bsModalRef.hide()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+<role-modal-form-base [form]="roleForm"></role-modal-form-base>
+<div class="modal-footer">
+  <div class="d-flex flex-row">
+    <button mat-raised-button color="warn" (click)="bsModalRef.hide()" class="me-4">
+      Cancel
+    </button>
+    <button mat-raised-button color="accent" (click)="submitForm()">
+      Add
+    </button>
+  </div>
+</div>

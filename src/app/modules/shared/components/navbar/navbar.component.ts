@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
 
     this.userItems = [
       {
-        label: this.loggedUser?.email,
+        label: this.loggedUser?.email
       },
       {
         separator: true,
@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit {
         label: 'My account',
         icon: 'pi pi-fw pi-user-edit',
         command: (event) => {
-          this.router.navigate(['/users', this.loggedUser?._id, 'edit']);
+          this.router.navigate(['/users/profile']);
         }
       },
       {
