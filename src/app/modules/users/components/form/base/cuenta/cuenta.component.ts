@@ -121,10 +121,12 @@ export class CuentaComponent implements OnInit {
     console.log(event)
     if (this.user) {
       let role = this.roles.find((item) => item._id == event.value);
-      if (role && role.permissions) {
-        for (let control of (this.form.get('permissions') as FormArray).controls) {
+
+      for (let control of (this.form.get('permissions') as FormArray).controls) {
+        if (event.value && role && role.permissions)
           control.patchValue({ allow: role.permissions.findIndex((item) => item == control.value.permission) !== -1 });
-        }
+        else
+          control.patchValue({ allow: false })
       }
     }
   }

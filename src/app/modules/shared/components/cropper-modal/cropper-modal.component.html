@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h4 class="modal-title">Crop image</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
+    <button mat-icon-button (click)="bsModalRef.hide()">
+        <i class="fas fa-times"></i>
     </button>
 </div>
 <div class="modal-body">
@@ -12,14 +12,12 @@
     </div>
 </div>
 <div class="modal-footer">
-    <div class="container int-container">
-        <div class="row">
-            <div class="col-md-6"> <button type="button"
-                    class="col-12 col-md-6 col-lg-6 btn btn-secondary"
-                    (click)="bsModalRef.hide()">Cancel</button></div>
-            <div class="col-md-6"> <button type="button"
-                    class="col-12 col-md-6 col-lg-6 offset-md-6 offset-lg-6 btn btn-success"
-                    (click)="saveImage()">Save</button></div>
-        </div>
+    <div class="d-flex flex-row">
+        <button mat-raised-button color="warn" (click)="bsModalRef.hide()" class="me-4">
+          Cancel
+        </button>
+        <button mat-raised-button color="accent" (click)="saveImage()">
+          Confirm
+        </button>
     </div>
 </div>

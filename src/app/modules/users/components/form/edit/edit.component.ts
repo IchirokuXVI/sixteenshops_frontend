@@ -75,9 +75,10 @@ export class EditComponent implements OnInit {
       finalize(() => this.loadingSubmit = false)
     ).subscribe(() => {
       if (this._authServ.user?._id == updatedUser._id) {
-        this._authServ.setLoggedUser({ ...this.user, ...updatedUser })
+        this._authServ.refreshTokens().subscribe(() => {
+          // Refresh tokens because the user info might have changed
+        });
       }
-      this.router.navigate(["/users"]);
     });
   }
 

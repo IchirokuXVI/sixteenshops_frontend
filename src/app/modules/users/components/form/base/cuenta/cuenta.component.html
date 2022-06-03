@@ -63,7 +63,7 @@
         <div class="row mb-sm-4">
             <div class="col-12">
               <div class="col-12 d-flex">
-                  <p-dropdown id="inputRole" (onChange)="updatePermissions($event)" formControlName="role" class="d-flex flex-fill"
+                  <p-dropdown id="inputRole" (onChange)="updatePermissions($event)" [showClear]="true" formControlName="role" class="d-flex flex-fill"
                       [styleClass]="'flex-fill'" [options]="roles || []" optionLabel="name"
                       optionValue="_id" placeholder="Select a role..." appendTo="body"></p-dropdown>
               </div>
