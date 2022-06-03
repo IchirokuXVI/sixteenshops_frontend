@@ -4,6 +4,7 @@ import { Permission } from 'src/app/models/permission.model';
 import { User } from 'src/app/models/user.model';
 import { PermissionService } from 'src/app/services/permission.service';
 import { finalize } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'usuario-form-permissions[form]',
@@ -20,7 +21,8 @@ export class PermissionsComponent implements OnInit {
   permissions: Permission[];
   permissionsFormArray: FormArray;
 
-  constructor(private _permissionServ: PermissionService) {
+  constructor(private _permissionServ: PermissionService,
+              private _authServ: AuthService) {
     this.loadingData = new EventEmitter();
     this.permissions = [];
 
@@ -54,5 +56,9 @@ export class PermissionsComponent implements OnInit {
         }));
       }
     });
+  }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
   }
 }

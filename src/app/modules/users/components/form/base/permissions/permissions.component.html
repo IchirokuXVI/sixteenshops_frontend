@@ -2,7 +2,7 @@
   <div class="col-12" formArrayName="permissions">
     <div class="row">
       <div class="col-xl-3 col-sm-4" *ngFor="let permission of permissions; let i = index" [formGroupName]="i">
-        <mat-slide-toggle color="primary" formControlName="allow">
+        <mat-slide-toggle color="primary" formControlName="allow" [disabled]="!(hasPermission(permission.name) | async)">
           {{ permission.description }}
         </mat-slide-toggle>
       </div>

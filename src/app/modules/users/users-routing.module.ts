@@ -20,15 +20,15 @@ const routes: Routes = [
         component: NewComponent
       },
       {
-        path: 'profile',
-        component: EditComponent
-      },
-      {
         path: ':id/edit',
         component: EditComponent
       }
     ]
-  }
+  },
+  {
+    path: 'profile',
+    component: EditComponent
+  },
 ];
 
 @NgModule({

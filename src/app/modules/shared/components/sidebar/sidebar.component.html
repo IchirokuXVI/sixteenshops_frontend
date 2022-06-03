@@ -3,7 +3,7 @@
       <i class="fas fa-home fa-fw"></i> <!-- fa-fw makes all icons same width (20x16 px) -->
       <span class="ms-3">Home</span>
   </a>
-  <a mat-list-item [routerLink]="['users']">
+  <a mat-list-item [routerLink]="['users']" *ngIf="hasPermission('getUser') | async">
       <i class="fas fa-users fa-fw"></i>
       <span class="ms-3">Users</span>
   </a>

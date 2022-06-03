@@ -14,6 +14,10 @@ export class UserService extends BaseResourceService<User> {
     this.endpoint = 'users';
   }
 
+  public profile(): Observable<User> {
+    return this.http.get<User>(this.baseUrl + "/" + this.endpoint + "/profile");
+  }
+
   public checkEmail(email: string): Observable<boolean> {
     return this.http.get<boolean>(this.baseUrl + "/" + this.endpoint + "/checkEmail", { params: { email: email } });
   }

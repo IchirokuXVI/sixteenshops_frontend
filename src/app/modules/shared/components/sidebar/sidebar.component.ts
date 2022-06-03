@@ -3,7 +3,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AuthService } from 'src/app/services/auth.service';
 import { SidebarService } from 'src/app/services/sidebar.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Observable } from 'rxjs';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,6 +20,7 @@ export class SidebarComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   constructor(private _sidebarServ: SidebarService,
+              private _authServ: AuthService,
               private changeDetectorRef: ChangeDetectorRef,
               private media: MediaMatcher,
               private router: Router) {
@@ -40,5 +42,9 @@ export class SidebarComponent implements OnInit {
     this._sidebarServ.show.subscribe((val) => {
         this.show = val;
     });
+  }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
   }
 }

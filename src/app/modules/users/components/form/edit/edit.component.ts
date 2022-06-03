@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, finalize } from 'rxjs';
+import { BehaviorSubject, finalize, Observable } from 'rxjs';
 import { UserService } from '../../../../../services/user.service';
 import { User } from 'src/app/models/user.model';
 import { BaseComponent } from '../base/base.component';
@@ -37,12 +37,15 @@ export class EditComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      let id = params['id'];
+      let $user: Observable<User>;
       if (!params['id']) {
         this.profile = true;
-        id = this._authServ.user?._id;
+        $user = this._userServ.profile();
+      } else {
+        $user = this._userServ.get(params['id']);
       }
-      this._userServ.get(id).subscribe((usuario) => this.user = usuario)
+
+      $user.subscribe((usuario) => this.user = usuario)
     });
   }
 

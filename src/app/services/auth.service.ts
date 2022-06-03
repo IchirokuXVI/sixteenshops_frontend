@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { Permission } from '../models/permission.model';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,12 @@ export class AuthService {
     // If there isn't a token saved then logout
     this.logout();
     return of(false);
+  }
+
+  public localUserHasPermission(permission: string): Observable<boolean> {
+    return this.$user.pipe(
+      map((user) => user?.permissions?.findIndex((item) => (item as Permission).name === permission) !== -1)
+    )
   }
 
   private saveTokens(access_token: string, refresh_token: string) {
