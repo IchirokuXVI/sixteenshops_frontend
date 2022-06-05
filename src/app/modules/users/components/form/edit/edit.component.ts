@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, finalize, Observable } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, filter, take, switchMap, tap, debounceTime } from 'rxjs';
 import { UserService } from '../../../../../services/user.service';
 import { User } from 'src/app/models/user.model';
 import { BaseComponent } from '../base/base.component';
 import { AuthService } from '../../../../../services/auth.service';
+import { MessageService } from 'primeng/api';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Component({
   selector: 'user-form-edit',
@@ -27,6 +29,7 @@ export class EditComponent implements OnInit {
   constructor(private _userServ: UserService,
               private _authServ: AuthService,
               private route: ActivatedRoute,
+              private messageServ: MessageService,
               private router: Router)
   {
     this.usuarioForm = new FormGroup({});
@@ -77,10 +80,10 @@ export class EditComponent implements OnInit {
     this._userServ.update(updatedUser, true).pipe(
       finalize(() => this.loadingSubmit = false)
     ).subscribe(() => {
+      this.messageServ.add({ severity: 'success', summary: 'Success', detail: 'User saved' });
       if (this._authServ.user?._id == updatedUser._id) {
-        this._authServ.refreshTokens().subscribe(() => {
-          // Refresh tokens because the user info might have changed
-        });
+        // Refresh tokens because the user info might have changed
+        this._authServ.refreshTokens().subscribe();
       }
     });
   }

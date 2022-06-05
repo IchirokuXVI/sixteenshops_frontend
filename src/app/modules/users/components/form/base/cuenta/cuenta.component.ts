@@ -81,10 +81,10 @@ export class CuentaComponent implements OnInit {
     if (this.user)
       passwordControl = new FormControl();
     else
-      passwordControl = new FormControl('', Validators.required);
+      passwordControl = new FormControl(null, Validators.required);
 
     this.form.addControl('password', passwordControl, { emitEvent: false });
-    this.form.addControl('passwordConfirm', new FormControl('', { validators: confirmPassword, updateOn: 'change' }), { emitEvent: false });
+    this.form.addControl('passwordConfirm', new FormControl(null, { validators: confirmPassword, updateOn: 'change' }), { emitEvent: false });
     this.form.addControl('role', new FormControl(), { emitEvent: false });
     this.form.addControl('avatar', new FormControl(), { emitEvent: false });
 
@@ -117,18 +117,23 @@ export class CuentaComponent implements OnInit {
     });
   }
 
-  updatePermissions(event: any) {
-    console.log(event)
-    if (this.user) {
-      let role = this.roles.find((item) => item._id == event.value);
+  updateValidity(control: AbstractControl | null) {
+    control?.updateValueAndValidity();
+  }
 
-      for (let control of (this.form.get('permissions') as FormArray).controls) {
-        if (event.value && role && role.permissions)
-          control.patchValue({ allow: role.permissions.findIndex((item) => item == control.value.permission) !== -1 });
-        else
-          control.patchValue({ allow: false })
-      }
-    }
+  updatePermissions(event: any) {
+    // Changed the logic so this isn't needed anymore
+    // It used to update the user permissions so it had the same as the selected role
+    // if (this.user) {
+    //   let role = this.roles.find((item) => item._id == event.value);
+
+    //   for (let control of (this.form.get('permissions') as FormArray).controls) {
+    //     if (event.value && role && role.permissions)
+    //       control.patchValue({ allow: role.permissions.findIndex((item) => item == control.value.permission) !== -1 });
+    //     else
+    //       control.patchValue({ allow: false })
+    //   }
+    // }
   }
 
   selectAvatar(avatar: string) {
@@ -194,7 +199,7 @@ export class CuentaComponent implements OnInit {
       return timer(500).pipe(switchMap(()=>{
         return this._userServ.checkEmail(control.value).pipe(
           map((taken) => taken ? { uniqueEmail: "Email is already in use" } : null),
-        )
+        );
       }));
     }
   }

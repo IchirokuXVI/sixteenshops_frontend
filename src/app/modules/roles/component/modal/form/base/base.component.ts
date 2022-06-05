@@ -4,6 +4,7 @@ import { Role } from 'src/app/models/role.model';
 import { PermissionService } from 'src/app/services/permission.service';
 import { finalize } from 'rxjs';
 import { Permission } from 'src/app/models/permission.model';
+import { AuthService } from '../../../../../../services/auth.service';
 
 @Component({
   selector: 'role-modal-form-base[form]',
@@ -22,7 +23,8 @@ export class BaseComponent implements OnInit {
 
   permissions: Permission[];
 
-  constructor(private _permissionServ: PermissionService) {
+  constructor(private _permissionServ: PermissionService,
+              private _authServ: AuthService) {
     this.loading = false;
     this.permissions = [];
 
@@ -60,5 +62,9 @@ export class BaseComponent implements OnInit {
         }));
       }
     });
+  }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
   }
 }

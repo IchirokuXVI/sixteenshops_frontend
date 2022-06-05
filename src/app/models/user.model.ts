@@ -7,5 +7,8 @@ export interface User extends BaseResource {
     avatar?: string,
     phone?: string,
     role?: string, // Ref to role,
-    permissions?: string[] | Permission[] // Refs to permission
+    permissions?: Permission[] | [{
+      permission: string | Permission, // Ref to permission
+      allow: boolean
+    }]
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, Observable, switchMap, take, throwError, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
@@ -8,7 +8,9 @@ export class TokenService implements HttpInterceptor {
   private refreshTokenInProgress = false;
   private refreshTokenSubject = new BehaviorSubject<any>(null);
 
-  constructor(public _authService: AuthService) { }
+  constructor(public _authService: AuthService) {
+    this._authService.$refreshTokenInProgress.subscribe((inProgress) => this.refreshTokenInProgress = inProgress);
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -25,9 +27,10 @@ export class TokenService implements HttpInterceptor {
         // Probably the token expired so try to refresh it first
         if (error && error.status === 401 && this._authService.refreshToken) {
           if (this.refreshTokenInProgress) {
+            console.log("already refreshing")
             // Already refreshing token so we have to wait until it is refreshed
-            return this.refreshTokenSubject.pipe(
-              filter(accessToken => accessToken !== null),
+            return this._authService.$accessToken.pipe(
+              filter(accessToken => accessToken !== undefined && accessToken !== null),
               take(1),
               switchMap((accessToken) => {
                 request = req.clone({
@@ -37,11 +40,8 @@ export class TokenService implements HttpInterceptor {
               })
             );
           } else {
-            this.refreshTokenInProgress = true;
-            // Set the refreshTokenSubject to null so that subsequent API calls will wait until the new token has been retrieved
-            this.refreshTokenSubject.next(null);
-
             return this._authService.refreshTokens().pipe(
+              tap(algo => console.log(algo)),
               switchMap(resp => {
                 this.refreshTokenInProgress = false;
                 this.refreshTokenSubject.next(resp.access_token)
@@ -53,7 +53,6 @@ export class TokenService implements HttpInterceptor {
               }),
               catchError(err => {
                 if (err.status === 401) {
-                  this.refreshTokenInProgress = false;
                   this._authService.logout();
                 }
                 return throwError(() => err);

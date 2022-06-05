@@ -1,10 +1,26 @@
 <div class="row" [formGroup]="form">
   <div class="col-12" formArrayName="permissions">
+    <div class="mb-3">
+      <p>
+        These permissions overrides those in the user's role. If the user doesn't have permissions he won't be able to access the admin panel.
+      </p>
+      <p>
+        Even if the user's role changes the permissions stated here will remain the same
+      </p>
+    </div>
     <div class="row">
-      <div class="col-xl-3 col-sm-4" *ngFor="let permission of permissions; let i = index" [formGroupName]="i">
-        <mat-slide-toggle color="primary" formControlName="allow" [disabled]="!(hasPermission(permission.name) | async)">
+      <div class="col-xl-3 col-md-4 mb-3" *ngFor="let permission of permissions; let i = index" [formGroupName]="i">
+        <!-- <mat-slide-toggle color="primary" formControlName="allow" [disabled]="!(hasPermission(permission.name) | async)">
           {{ permission.description }}
-        </mat-slide-toggle>
+        </mat-slide-toggle> -->
+        <!-- <mat-checkbox [indeterminate]="true" color="primary" formControlName="allow" [disabled]="!(hasPermission(permission.name) | async)">
+          {{ permission.description }}
+        </mat-checkbox> -->
+
+        <!-- Custom slider with three states -->
+        <slider-indeterminate formControlName="allow" [label]="permission.description">
+          {{ permission.long_description }}
+        </slider-indeterminate>
       </div>
     </div>
   </div>

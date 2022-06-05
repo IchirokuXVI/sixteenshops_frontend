@@ -52,7 +52,7 @@ export class BaseResourceService<T extends BaseResource> {
     Object.keys(data).forEach((key)=>{
       if(data[key] && data[key].name) {
         form.set(key, data[key], data[key].name);
-      } else if (data[key] !== undefined && data[key] !== null) {
+      } else if (data[key] !== undefined) {
         // let toSet: any = data[key];
 
         // if (typeof(toSet) === 'object')
@@ -70,7 +70,7 @@ export class BaseResourceService<T extends BaseResource> {
     return form;
   }
 
-  // Formateado con puntos
+  // Dot formatted
   protected recursiveMultipart(fieldname: string, data: Object, formData: FormData) {
     for (let [key, value] of Object.entries(data)) {
       if (this.validProcessableObject(value) && typeof(value) === 'object') {
@@ -82,10 +82,10 @@ export class BaseResourceService<T extends BaseResource> {
   }
 
   private validProcessableObject(value: Object) {
-    return !(value instanceof Date || value instanceof Blob || value instanceof File || value instanceof Image);
+    return !(value === null || value instanceof Date || value instanceof Blob || value instanceof File || value instanceof Image);
   }
 
-  // Formateado con corchetes
+  // Bracket formatted
   // protected recursiveMultipart(fieldname: string, data: Object, formData: FormData, array: boolean = false) {
   //   for (let [key, value] of Object.entries(data)) {
   //     if (!(value instanceof Date) && (typeof(value) === 'object' || Array.isArray(value))) {

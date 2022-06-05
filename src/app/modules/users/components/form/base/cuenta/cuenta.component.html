@@ -36,7 +36,7 @@
           <div class="col-12 mb-4 mb-md-0 col-md-6">
             <div class="p-inputgroup">
               <span class="p-float-label">
-                  <input formControlName="password" id="inputPassword" type="password" pInputText>
+                  <input formControlName="password" id="inputPassword" (change)="updateValidity(this.form.get('passwordConfirm'))" type="password" pInputText>
                   <label for="inputPassword">Password*</label>
               </span>
             </div>
@@ -60,7 +60,7 @@
             </div>
           </div>
         </div>
-        <div class="row mb-sm-4">
+        <div class="row mb-4 mb-md-0">
             <div class="col-12">
               <div class="col-12 d-flex">
                   <p-dropdown id="inputRole" (onChange)="updatePermissions($event)" [showClear]="true" formControlName="role" class="d-flex flex-fill"

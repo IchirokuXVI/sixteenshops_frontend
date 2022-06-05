@@ -1,0 +1,19 @@
+<div class="slider-wrapper">
+  <div class="slider-label">
+    {{ label }}
+  </div>
+  <div class="slider-buttons" [class.disabled]="disabled">
+    <div class="deny" (click)="next(states[2])" [class.active]="value === states[2]">
+      <i class="fas fa-times fa-fw"></i>
+    </div>
+    <div class="indeterminate" (click)="next(states[0])" [class.active]="value === states[0]">
+      <i class="fas fa-minus fa-fw"></i>
+    </div>
+    <div class="allow" (click)="next(states[1])" [class.active]="value === states[1]">
+      <i class="fas fa-check fa-fw"></i>
+    </div>
+  </div>
+</div>
+<div class="slider-description">
+  <ng-content></ng-content>
+</div>

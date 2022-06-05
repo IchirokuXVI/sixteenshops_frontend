@@ -4,6 +4,7 @@ import { UserService } from 'src/app/services/user.service';
 import { catchError, finalize, throwError } from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { ConfirmationService } from 'src/app/services/primeng/confirmation.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'users-list',
@@ -21,7 +22,8 @@ export class ListComponent implements OnInit {
   // limit: number;
 
   constructor(private _userServ: UserService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService
   ) {
     this.users = [];
     this.loading = false;
@@ -53,7 +55,7 @@ export class ListComponent implements OnInit {
               btn._elementRef.nativeElement.style.pointerEvents = "auto";
             }),
             catchError((error: any): any => {
-              alert("Couldn't delete user");
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Couldn\'t delete user' });
               throwError(() => error);
             })
           ).subscribe((res) => {

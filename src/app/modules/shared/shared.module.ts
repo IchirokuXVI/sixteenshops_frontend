@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutComponent } from './components/admin-layout/admin-layout.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { CropperModalComponent } from './components/cropper-modal/cropper-modal.component';
 
 // ----------------
 //     Material
@@ -27,7 +26,6 @@ import { MatTableModule } from '@angular/material/table';
 //     PrimeNG
 // ----------------
 import { TableModule } from 'primeng/table';
-import { MultiSelectModule } from 'primeng/multiselect';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessagesModule } from 'primeng/messages'; // Por que hacen falta 2 modulos para mensajes ?
@@ -47,12 +45,19 @@ import { ConfirmPopupModule } from './components/primeng/confirmpopup/confirmpop
 // ----------------
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
+// ----------------
+//      CUSTOM
+// ----------------
+import { CropperModalComponent } from './components/cropper-modal/cropper-modal.component';
+import { SliderIndeterminateComponent } from './components/slider-indeterminate/slider-indeterminate.component';
+
 @NgModule({
   declarations: [
     AdminLayoutComponent,
     NavbarComponent,
     SidebarComponent,
-    CropperModalComponent
+    CropperModalComponent,
+    SliderIndeterminateComponent
   ],
   imports: [
     CommonModule,
@@ -92,7 +97,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     MatCardModule,
     MatTableModule,
     MatProgressSpinnerModule,
-    ToastModule
+    ToastModule,
+    SliderIndeterminateComponent
   ]
 })
 export class SharedModule { }

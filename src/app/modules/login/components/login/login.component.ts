@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
       if (this.login) {
         this.sendLogin(form.value.email, form.value.password);
       } else {
-        this.sendRegister(form.value);
+        this.sendRegister(form.value.email, form.value.password);
       }
     }
   }
@@ -58,9 +58,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private sendRegister(user: User) {
+  private sendRegister(email: string, password: string) {
     $('#confirmPasswordError').text("");
-    this._userServ.create(user).subscribe({
+    this._authServ.register(email, password).subscribe({
       next: () => {
         $('#formMessage').text("User successfully created");
         $('.is-invalid').removeClass('is-invalid');
@@ -68,7 +68,6 @@ export class LoginComponent implements OnInit {
         this.login = true;
       },
       error: () => {
-        console.log("asdasd")
         $('#emailInput').addClass("is-invalid");
       }
     });

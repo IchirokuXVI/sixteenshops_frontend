@@ -4,5 +4,16 @@ export const confirmPassword: ValidatorFn = (control: AbstractControl): Validati
   const password = control.parent?.get('password');
   const confirm = control;
 
-  return password && confirm && (confirm.value.length === 0 || password.value === confirm.value) ? null : { doesntMatch: true };
+  console.log("password: " + password?.value)
+  console.log("confirmpassword: " + confirm?.value)
+
+  if (password && confirm) {
+    if ((password.value === undefined || password.value === null || password.value.length === 0) && (confirm.value === undefined || confirm.value === null || confirm.value.length === 0))
+      return null;
+
+    if (password.value === confirm.value)
+      return null;
+  }
+
+  return { doesntMatch: true };
 };

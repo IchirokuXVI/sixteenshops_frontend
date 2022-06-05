@@ -39,22 +39,35 @@ export class PermissionsComponent implements OnInit {
     this.loadingData.next(true);
 
     this._permissionServ.list().pipe(
-      finalize(() => this.loadingData.next(false))
+      finalize(() => this.loadingData.next(false)),
     ).subscribe((permissions) => {
       this.permissions = permissions;
 
       for (let permission of permissions) {
-        let defaultVal = false;
+        let defaultVal = null;
 
         if (this.user && this.user.permissions) {
-          defaultVal = this.user.permissions.findIndex((item) => item === permission._id) !== -1;
+          defaultVal = (this.user.permissions as any).find((item: any) => item.permission === permission._id)?.allow;
         }
 
-        this.permissionsFormArray.push(new FormGroup({
+        let group = new FormGroup({
           permission: new FormControl(permission._id),
           allow: new FormControl(defaultVal)
-        }));
+        });
+
+        this.permissionsFormArray.push(group);
+
+        this.hasPermission(permission.name).subscribe((has) => {
+          console.log(permission.name + " " + has)
+          if (!has)
+            group.disable();
+          else
+            group.enable();
+        })
       }
+
+      // if (this.user)
+      //   this.permissionsFormArray.patchValue(this.user.permissions!);
     });
   }
 

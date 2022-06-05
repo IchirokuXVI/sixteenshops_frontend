@@ -58,11 +58,14 @@ $theme: $dark-theme;
 @use './app/app-theme.component' as app;
 @use './app/modules/shared/components/navbar/navbar-theme.component' as navbar;
 @use './app/modules/users/components/form/base/cuenta/cuenta-theme.component' as usuarioFormCuenta;
+@use './app/modules/shared/components/slider-indeterminate/slider-indeterminate-theme.component' as sliderIndeterminate;
 
 @include mat.all-component-themes($theme);
 @include app.theme($theme);
 @include navbar.theme($theme);
 @include usuarioFormCuenta.theme($theme);
+@include sliderIndeterminate.theme($theme);
+
 @import '/node_modules/primeng/resources/themes/md-dark-indigo/theme';
 
 $dark-color-config: mat.get-color-config($dark-theme);
@@ -111,6 +114,8 @@ body.light-theme {
   @include app.theme($theme);
   @include navbar.theme($theme);
   @include usuarioFormCuenta.theme($theme);
+  @include sliderIndeterminate.theme($theme);
+
   @import '/node_modules/primeng/resources/themes/md-light-indigo/theme';
 }
 
