@@ -58,7 +58,7 @@ export class PermissionsComponent implements OnInit {
         this.permissionsFormArray.push(group);
 
         this.hasPermission(permission.name).subscribe((has) => {
-          console.log(permission.name + " " + has)
+          // console.log(permission.name + " " + has)
           if (!has)
             group.disable();
           else

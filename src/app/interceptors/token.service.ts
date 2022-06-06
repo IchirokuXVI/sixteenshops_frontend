@@ -48,7 +48,6 @@ export class TokenService implements HttpInterceptor {
                 request = req.clone({
                   headers: req.headers.set("Authorization", "Bearer " + resp.access_token)
                 });
-                console.log("tokenRefreshed");
                 return next.handle(request);
               }),
               catchError(err => {

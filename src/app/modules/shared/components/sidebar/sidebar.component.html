@@ -7,7 +7,7 @@
       <i class="fas fa-users fa-fw"></i>
       <span class="ms-3">Users</span>
   </a>
-  <a mat-list-item [routerLink]="['roles']">
+  <a mat-list-item [routerLink]="['roles']" *ngIf="hasPermission('getRoles') | async">
       <mat-icon class="fa-fw">security</mat-icon>
       <span class="ms-3">Roles</span>
   </a>

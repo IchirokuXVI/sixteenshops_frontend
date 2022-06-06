@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, throwError, delay, finalize } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, throwError, debounceTime, finalize, filter, mergeMap, tap, first } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -97,31 +97,37 @@ export class AuthService {
    * @returns Observable with the response from the server
    */
   public refreshTokens(): Observable<any> {
-    if (this.refreshToken) {
-      let customHeaders = new HttpHeaders();
-      customHeaders = customHeaders.append("X-Skip-Interceptor", ''); // Custom header to skip TokenInterceptor
-      customHeaders = customHeaders.append("Authorization", 'Bearer ' + this.refreshToken); // Set refresh token in authorization header
-      let customOptions = { headers: customHeaders };
-
-      this.refreshTokenInProgress.next(true);
-      this.accessTokenSubject.next(undefined);
-
-      return this.http.post(`${this.url}/auth/refresh`, undefined, customOptions).pipe(
-        map((res: any) => {
-          this.userSubject.next(res.user);
-          this.saveTokens(res.access_token, res.refresh_token);
-          return res;
-        }),
-        catchError((error: any) => {
-          this.logout();
-          return throwError(() => error);
-        }),
-        finalize(() => this.refreshTokenInProgress.next(false)),
-      );
-    }
-
-    // Return false if there isn't a refresh token saved
-    return of(false);
+    return this.$refreshToken.pipe(
+      filter((token) => token !== undefined && token !== null),
+      mergeMap((token) => {
+        let customHeaders = new HttpHeaders();
+        customHeaders = customHeaders.append("X-Skip-Interceptor", ''); // Custom header to skip TokenInterceptor
+        customHeaders = customHeaders.append("Authorization", 'Bearer ' + token); // Set refresh token in authorization header
+        let customOptions = { headers: customHeaders };
+        return this.http.post(`${this.url}/auth/refresh`, undefined, customOptions).pipe(
+          tap(() => {
+            console.log("tapppp " + Date.now())
+            this.refreshTokenInProgress.next(true);
+            this.accessTokenSubject.next(undefined);
+            this.refreshTokenSubject.next(undefined);
+          }),
+          map((res: any) => {
+            this.userSubject.next(res.user);
+            this.saveTokens(res.access_token, res.refresh_token);
+            return res;
+          }),
+          catchError((error: any) => {
+            this.logout();
+            return throwError(() => error);
+          }),
+          finalize(() => {
+            console.log("Token refreshed " + new Date());
+            this.refreshTokenInProgress.next(false);
+          })
+        )
+      }, 1),
+      first()
+    );
   }
 
   /**
