@@ -9,6 +9,7 @@ import { Role } from 'src/app/models/role.model';
 import { User } from 'src/app/models/user.model';
 import { CropperModalComponent } from 'src/app/modules/shared/components/cropper-modal/cropper-modal.component';
 import { confirmPassword } from 'src/app/modules/shared/validators/confirm-password.validator';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'usuario-form-cuenta[form]',
@@ -41,7 +42,8 @@ export class CuentaComponent implements OnInit {
   constructor(private _roleServ: RoleService,
               private _userServ: UserService,
               private _modalServ: BsModalService,
-              private sanitizer: DomSanitizer
+              private sanitizer: DomSanitizer,
+              private messageServ: MessageService
   ) {
     this.loadingData = new EventEmitter();
     this.imgLoading = false;
@@ -152,7 +154,7 @@ export class CuentaComponent implements OnInit {
     event.target.value = null;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("Image too large (5MB maximum)");
+      this.messageServ.add({ severity: 'warn', summary: 'Image too big', detail: 'The selected image is too big (max 5MB)' });
       return;
     }
 
@@ -176,11 +178,16 @@ export class CuentaComponent implements OnInit {
         this.imgLoading = true;
         canvas.toBlob((blob) => {
           if (blob) {
-            this.userAvatar = blob;
-            this.form.get('avatar')?.setValue(blob);
-            this.selectedAvatar = URL.createObjectURL(blob);
-            this.imgLoading = false;
+            if (blob.size > 5 * 1024 * 1024) {
+              this.messageServ.add({ severity: 'warn', summary: 'Error converting image', detail: 'The selected image went over 5MB when converting to PNG. Please select a different one' });
+            } else {
+              this.userAvatar = blob;
+              this.form.get('avatar')?.setValue(blob);
+              this.selectedAvatar = URL.createObjectURL(blob);
+            }
           }
+
+          this.imgLoading = false;
         });
       }
     });

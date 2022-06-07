@@ -1,0 +1,19 @@
+.pricing {
+    display: flex;
+    flex-direction: row;
+}
+
+.price {
+    font-size: 2em;
+}
+
+.price-without-discount {
+    text-decoration: line-through;
+    margin-left: 2em;
+}
+
+.price-without-discount, .discount {
+    align-self: flex-start;
+    font-size: 0.9em;
+    margin-left: 1em;
+}
