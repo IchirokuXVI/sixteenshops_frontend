@@ -1,6 +1,25 @@
-.product-img {
+.product-images {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
+
+  & .product-img {
     width: 512px;
     height: 512px;
+  }
+
+  & .product-images-miniatures {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    & .product-miniature-img {
+      width: 64px;
+      height: 64px;
+      padding: 4px;
+      border-radius: 0.25em;
+    }
+  }
 }
 
 .pricing {
