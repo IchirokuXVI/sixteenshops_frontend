@@ -172,7 +172,7 @@ export class CuentaComponent implements OnInit {
       ignoreBackdropClick: true
     });
 
-    // El modal tiene un observable que devuelve la imagen recortada
+    // The modal component has an observable that returns the cropped image
     modalRef.content?.$resultImg.subscribe((canvas) => {
       if (canvas) {
         this.imgLoading = true;
@@ -199,7 +199,7 @@ export class CuentaComponent implements OnInit {
 
   uniqueEmail(): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-      // Si no se ha llegado a modificar el input no puede ser inválido
+      // If the input wasn't modified then don't check if it is valid
       if (control.pristine || control.value == this.user?.email)
         return of(null);
 

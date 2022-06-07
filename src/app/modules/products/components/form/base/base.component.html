@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-9 mx-auto">
+    <div class="col-lg-9 mx-auto">
         <div class="row">
             <div class="col-md-6">
-                asd
+                <img src="assets/img/default-product.png" class="product-img">
             </div>
             <div class="col-md-6">
                 <div class="product-heading">
@@ -13,13 +13,111 @@
                         <span class="price">
                             575€
                         </span>
-                        <span class="price-without-discount">
-                            709€
-                        </span>
-                        <span class="discount">
-                            18%
+                        <span class="price-discount">
+                            <span>
+                                <span class="discount">18 %</span><span> dto.</span>
+                            </span>
+                            <span class="price-before">
+                                709€
+                            </span>
                         </span>
                     </div>
+                </div>
+                <div class="row product-info">
+                    <div class="col-12">
+                        <div class="row property">
+                            <div class="col-2 property-name">
+                                Brand:
+                            </div>
+                            <div class="col-10">
+                                Newskill and longer
+                            </div>
+                        </div>
+                        <div class="row property">
+                            <div class="col-2 property-name">
+                                Stock:
+                            </div>
+                            <div class="col-10">
+                                190
+                            </div>
+                        </div>
+                        <div class="row property">
+                            <div class="col-2 property-name">
+                                Amount:
+                            </div>
+                            <div class="col-10">
+                                14
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-options-groups">
+                    <div class="group-name">
+                        Color
+                    </div>
+                    <div class="group-options">
+                        <div class="option">
+                            Rojo
+                        </div>
+                        <div class="option active">
+                            Amarillo
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                        <div class="option">
+                            Verde
+                        </div>
+                    </div>
+                </div>
+                <div class="product-options-groups">
+                    <div class="group-name">
+                        Tamaño
+                    </div>
+                    <div class="group-options">
+                        <div class="option">
+                            Pequeño
+                        </div>
+                        <div class="option">
+                            Grande
+                        </div>
+                    </div>
+                </div>
+                <div class="product-actions">
+                    <button mat-raised-button class="product-buy" color="accent">
+                        <mat-icon class="me-2">shopping_cart</mat-icon>
+                        <span>Buy</span>
+                    </button>
+                    <button #deleteButton mat-icon-button class="product-delete" tooltip="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
         </div>

@@ -1,19 +1,86 @@
+.product-img {
+    width: 512px;
+    height: 512px;
+}
+
 .pricing {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .price {
     font-size: 2em;
 }
 
-.price-without-discount {
-    text-decoration: line-through;
-    margin-left: 2em;
+.discount {
+    padding-top: 0.075em;
+    padding-bottom: 0.075em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    border-radius: 0.25em;
 }
 
-.price-without-discount, .discount {
-    align-self: flex-start;
-    font-size: 0.9em;
+.price-discount {
+    display: flex;
+    flex-direction: column;
     margin-left: 1em;
+}
+
+.price-before {
+    text-decoration: line-through;
+}
+
+.product-info {
+    margin-top: 2em;
+}
+
+.property {
+    & .property-name {
+        font-weight: bold;
+    }
+
+    & + property {
+        margin-block-end: 1em;
+    }
+}
+
+.product-options-groups {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+
+    & .group-name {
+        font-weight: bold;
+    }
+
+    & .group-options {
+        display: flex;
+        flex-direction: row;
+        column-gap: 1em;
+        row-gap: 0.5em;
+        flex-wrap: wrap;
+        align-items: center;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+
+        & .option {
+            padding: 0.75em;
+            border-radius: 0.25em;
+        }
+    }
+}
+
+.product-actions {
+    margin-top: 2em;
+    display: flex;
+    .product-buy {
+        font-size: 1.2em;
+        padding: 0.25em 1em 0.25em 1em;
+    }
+
+    .product-delete {
+        font-size: 1.2em;
+        margin-inline-start: auto;
+    }
 }
