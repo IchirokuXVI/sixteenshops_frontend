@@ -42,12 +42,20 @@ export class BaseComponent implements OnInit {
     this.optionGroupsForm.push(new FormGroup({ name: new FormControl(), options: new FormArray([]) }));
   }
 
+  deleteOptionGroup(index: number) {
+    this.optionGroupsForm.removeAt(index);
+  }
+
   getOptionGroups() {
     return this.optionGroupsForm.controls;
   }
 
   getOptionGroupOptions(optionGroup: AbstractControl) {
     return optionGroup.get('options') as FormArray;
+  }
+
+  deleteOptionGroupOption(optionGroup: AbstractControl, index: number) {
+    (optionGroup.get('options') as FormArray).removeAt(index);
   }
 
   addOption(optionGroup: AbstractControl) {

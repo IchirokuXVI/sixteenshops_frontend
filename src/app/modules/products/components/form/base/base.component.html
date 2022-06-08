@@ -95,12 +95,12 @@
                     <div class="product-options-groups" formArrayName="optionGroups">
                         <div class="option-group" [formGroupName]="groupIndex" *ngFor="let group of optionGroupsForm.controls; let groupIndex = index">
                             <div class="group-name">
-                                <chip formControlName="name" [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Group name"></chip>
+                                <chip formControlName="name" (onRemove)="deleteOptionGroup(groupIndex)" [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Group name"></chip>
                             </div>
                             <div class="group-options" formArrayName="options">
                                 <div class="option" [formGroupName]="optionIndex" *ngFor="let option of getOptionGroupOptions(group).controls; let optionIndex = index; let isLast = last">
                                     <div class="p-inputgroup">
-                                        <chip formControlName="name" [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Option name"></chip>
+                                        <chip formControlName="name" (onRemove)="deleteOptionGroupOption(group, optionIndex)" [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Option name"></chip>
                                     </div>
                                 </div>
                                 <button mat-mini-fab color="accent" (click)="addOption(group)">

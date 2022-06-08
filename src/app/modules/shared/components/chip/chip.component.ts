@@ -1,4 +1,4 @@
-import { Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, forwardRef, Input, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -33,7 +33,7 @@ export class ChipComponent implements ControlValueAccessor {
   @Input() active: boolean = false;
   @Input() removable: boolean = false;
 
-  @Input() _onRemove!: () => void;
+  @Output() onRemove: EventEmitter<any> = new EventEmitter();
 
   private _onChange!: (val: boolean) => void;
   private _onTouched!: () => void;
@@ -85,7 +85,6 @@ export class ChipComponent implements ControlValueAccessor {
 
   remove() {
     this.visible = false;
-    if (this._onRemove)
-      this._onRemove();
+    this.onRemove.emit();
   }
 }
