@@ -1,11 +1,16 @@
-<div class="chip" (click)="focusValueEditSingle()" (dblclick)="focusValueEditDouble()" [class.active]="active" *ngIf="visible">
-  <div class="chip-placeholder" *ngIf="showPlaceholder">
+<div class="chip" [class.cursor-text]="!value" (click)="focusValueEditSingle()" (dblclick)="focusValueEditDouble()" [class.active]="active" *ngIf="visible">
+  <div class="chip-placeholder unselectable" *ngIf="showPlaceholder">
     {{ placeholder }}
   </div>
-  <div #inputValue class="chip-value" [class.chip-hide-value]="showPlaceholder" [class.chip-show-value]="!editValue" (blur)="chipBlur()" [contentEditable]="editValue" (input)="next($event)">
+  <div #inputValue class="chip-value" [class.chip-hide-value]="showPlaceholder" [class.unselectable]="!editValue" (blur)="chipBlur()" [contentEditable]="editValue" (input)="next($event)">
     {{ originalValue }}
   </div>
-  <div class="chip-remove" (click)="remove()" *ngIf="removable">
-    <i class="fas fa-times"></i>
+  <div class="chip-actions">
+    <span class="chip-edit" (click)="focusValueEdit()" *ngIf="editable && showEditButton" tooltip="Edit">
+      <i class="fas fa-edit"></i>
+    </span>
+    <span class="chip-remove" (click)="remove()" *ngIf="removable" tooltip="Remove">
+      <i class="fas fa-times"></i>
+    </span>
   </div>
 </div>

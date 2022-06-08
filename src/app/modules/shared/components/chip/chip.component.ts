@@ -25,13 +25,15 @@ export class ChipComponent implements ControlValueAccessor {
   editValue: boolean = false;
 
   @Input() placeholder?: string;
-  
+
   @Input() disabled: boolean = false;
   @Input() editable: boolean = false;
+  @Input() editDblClick: boolean = false;
+  @Input() showEditButton: boolean = false;
   @Input() active: boolean = false;
   @Input() removable: boolean = false;
 
-  @Input() _onRemove!: () => void; 
+  @Input() _onRemove!: () => void;
 
   private _onChange!: (val: boolean) => void;
   private _onTouched!: () => void;
@@ -44,26 +46,28 @@ export class ChipComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  next(event: any) {   
+  next(event: any) {
     this.value = event.target.innerText;
     this._onChange(event.target.innerText);
     this._onTouched();
   }
 
-  focusValueEditSingle() {   
+  focusValueEditSingle() {
     if (this.editable && this.showPlaceholder) {
-      this.showPlaceholder = false;
-      this.editValue = true;
-      setTimeout(() => this.inputValue.nativeElement.focus())
+      this.focusValueEdit();
     }
   }
 
   focusValueEditDouble() {
-    if (this.editable) {
-      this.showPlaceholder = false;
-      this.editValue = true;
-      setTimeout(() => this.inputValue.nativeElement.focus())
+    if (this.editable && this.editDblClick) {
+      this.focusValueEdit();
     }
+  }
+
+  focusValueEdit() {
+    this.showPlaceholder = false;
+    this.editValue = true;
+    setTimeout(() => this.inputValue.nativeElement.focus())
   }
 
   chipBlur() {

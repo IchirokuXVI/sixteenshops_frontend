@@ -22,7 +22,7 @@ export class BaseComponent implements OnInit {
   editingProduct: boolean;
 
   constructor(private _productServ: ProductService
-  ) { 
+  ) {
     this.editingProduct = true;
 
     this.optionGroupsForm = new FormArray([]);
