@@ -6,7 +6,7 @@
         <span class="ms-2" *ngIf="profile">Your account</span>
     </div>
 </div>
-<usuario-form-base *ngIf="user" [form]="usuarioForm" [user]="user" [$submitted]="submitted"></usuario-form-base>
+<usuario-form-base *ngIf="user" [form]="userForm" [user]="user" [$submitted]="submitted"></usuario-form-base>
 <div class="d-flex my-3">
   <button mat-raised-button class="ms-3" color="accent" (click)="submitForm()" [disabled]="loadingSubmit">
     <i class="fas fa-plus me-2"></i>

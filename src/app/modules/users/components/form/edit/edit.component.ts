@@ -15,7 +15,7 @@ import { MessageService } from 'primeng/api';
 })
 export class EditComponent implements OnInit {
 
-  usuarioForm: FormGroup;
+  userForm: FormGroup;
   loadingSubmit: boolean;
 
   user?: User;
@@ -31,7 +31,7 @@ export class EditComponent implements OnInit {
               private messageServ: MessageService,
               private router: Router)
   {
-    this.usuarioForm = new FormGroup({});
+    this.userForm = new FormGroup({});
     this.loadingSubmit = false;
     this.submitted = new BehaviorSubject<boolean>(false);
     this.profile = false;
@@ -47,7 +47,7 @@ export class EditComponent implements OnInit {
         $user = this._userServ.get(params['id']);
       }
 
-      $user.subscribe((usuario) => this.user = usuario)
+      $user.subscribe((user) => this.user = user)
     });
   }
 
@@ -56,7 +56,7 @@ export class EditComponent implements OnInit {
     this.baseComp.formDom.nativeElement.requestSubmit();
     this.submitted.next(true);
 
-    if (!this.usuarioForm.valid)
+    if (!this.userForm.valid)
       return;
 
     if (this.baseComp.loadingData) {
@@ -68,11 +68,11 @@ export class EditComponent implements OnInit {
 
     let updatedUser: any = {
       _id: this.user?._id,
-      ...this.usuarioForm.value,
+      ...this.userForm.value,
     };
 
     // Delete avatar field if it wasn't modified
-    if (this.usuarioForm.get('avatar')?.value === this.user?.avatar) {
+    if (this.userForm.get('avatar')?.value === this.user?.avatar) {
       delete updatedUser.avatar;
     }
 

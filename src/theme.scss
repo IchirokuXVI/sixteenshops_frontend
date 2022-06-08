@@ -57,6 +57,7 @@ $theme: $dark-theme;
 
 @use './app/app-theme.component' as app;
 @use './app/modules/shared/components/slider-indeterminate/slider-indeterminate-theme.component' as sliderIndeterminate;
+@use './app/modules/shared/components/chip/chip-theme.component' as chip;
 @use './app/modules/shared/components/navbar/navbar-theme.component' as navbar;
 @use './app/modules/users/components/form/base/cuenta/cuenta-theme.component' as usuarioFormCuenta;
 @use './app/modules/products/components/form/base/base-theme.component' as productBaseForm;
@@ -64,6 +65,7 @@ $theme: $dark-theme;
 @include mat.all-component-themes($theme);
 @include app.theme($theme);
 @include sliderIndeterminate.theme($theme);
+@include chip.theme($theme);
 @include navbar.theme($theme);
 @include usuarioFormCuenta.theme($theme);
 @include productBaseForm.theme($theme);
@@ -115,6 +117,7 @@ body.light-theme {
   @include mat.all-component-themes($theme);
   @include app.theme($theme);
   @include sliderIndeterminate.theme($theme);
+  @include chip.theme($theme);
   @include navbar.theme($theme);
   @include usuarioFormCuenta.theme($theme);
   @include productBaseForm.theme($theme);

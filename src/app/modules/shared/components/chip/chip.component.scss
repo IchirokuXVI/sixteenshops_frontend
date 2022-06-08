@@ -1,0 +1,51 @@
+.chip {
+  display: flex;
+  flex-direction: row;
+  border-radius: 1em;
+  align-items: center;
+  padding: 0.75em;
+  min-width: 3em;
+
+  & .disabled {
+    pointer-events: none;
+  }
+
+  & .chip-placeholder {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-left: 0.5em;
+    z-index: -1;
+  }
+
+  & .chip-value {
+    width: 100%;
+    padding-left: 0.5em;
+    outline: none;
+
+    &.chip-hide-value {
+      display: none;
+    }
+
+    &.chip-show-value {
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      pointer-events: none;
+    }
+  }
+
+  & .chip-remove {
+    margin-inline-start: auto;
+    padding-inline-start: 0.75em;
+  }
+}

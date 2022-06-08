@@ -13,17 +13,17 @@ import { User } from 'src/app/models/user.model';
 })
 export class NewComponent implements OnInit {
 
-  usuarioForm: FormGroup;
+  userForm: FormGroup;
   loadingSubmit: boolean;
 
   submitted: BehaviorSubject<boolean>;
 
   @ViewChild(BaseComponent) baseComp!: BaseComponent;
 
-  constructor(private _usuarioServ: UserService,
+  constructor(private _userServ: UserService,
               private router: Router)
   {
-    this.usuarioForm = new FormGroup({});
+    this.userForm = new FormGroup({});
     this.loadingSubmit = false;
     this.submitted = new BehaviorSubject<boolean>(false);
   }
@@ -35,7 +35,7 @@ export class NewComponent implements OnInit {
     this.baseComp.formDom.nativeElement.requestSubmit();
     this.submitted.next(true);
 
-    if (!this.usuarioForm.valid)
+    if (!this.userForm.valid)
       return;
 
     if (this.baseComp.loadingData) {
@@ -45,10 +45,10 @@ export class NewComponent implements OnInit {
 
     this.loadingSubmit = true;
     let user: User = {
-      ...this.usuarioForm.value
+      ...this.userForm.value
     };
 
-    this._usuarioServ.create(user, true).pipe(
+    this._userServ.create(user, true).pipe(
       finalize(() => this.loadingSubmit = false)
     ).subscribe(() => {
       this.router.navigate(["/users"]);

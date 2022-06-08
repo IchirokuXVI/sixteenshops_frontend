@@ -33,6 +33,8 @@ import { MessageModule } from 'primeng/message'; // Vaya cosa mas rara
 import { DataViewModule } from 'primeng/dataview';
 import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { Chip, ChipModule } from 'primeng/chip';
 // ConfirmPopup modified by me because it had a bug
 // https://github.com/primefaces/primeng/issues/10343
 // https://github.com/primefaces/primeng/issues/10285
@@ -50,6 +52,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 // ----------------
 import { CropperModalComponent } from './components/cropper-modal/cropper-modal.component';
 import { SliderIndeterminateComponent } from './components/slider-indeterminate/slider-indeterminate.component';
+import { ChipComponent } from './components/chip/chip.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +60,8 @@ import { SliderIndeterminateComponent } from './components/slider-indeterminate/
     NavbarComponent,
     SidebarComponent,
     CropperModalComponent,
-    SliderIndeterminateComponent
+    SliderIndeterminateComponent,
+    ChipComponent
   ],
   imports: [
     CommonModule,
@@ -98,7 +102,10 @@ import { SliderIndeterminateComponent } from './components/slider-indeterminate/
     MatTableModule,
     MatProgressSpinnerModule,
     ToastModule,
-    SliderIndeterminateComponent
+    SliderIndeterminateComponent,
+    InputNumberModule,
+    ChipModule,
+    ChipComponent
   ]
 })
 export class SharedModule { }
