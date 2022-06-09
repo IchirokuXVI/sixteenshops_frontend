@@ -13,9 +13,15 @@ export class UserService extends BaseResourceService<User> {
     super(http);
     this.endpoint = 'users';
   }
-  
+
   public profile(): Observable<User> {
     return this.http.get<User>(this.baseUrl + "/" + this.endpoint + "/profile");
+  }
+
+  public updateProfile(user: User, isMultipart: boolean = true): Observable<User> {
+    let data: any = isMultipart ? this.processMultipart(user) : user;
+
+    return this.http.put<User>(`${this.baseUrl}/${this.endpoint}/profile`, data);
   }
 
   public checkEmail(email: string): Observable<boolean> {

@@ -21,15 +21,19 @@ export class BaseComponent implements OnInit {
 
   editingProduct: boolean;
 
+  amountToBuy: number;
+
   constructor(private _productServ: ProductService
   ) {
     this.editingProduct = true;
 
     this.optionGroupsForm = new FormArray([]);
+
+    this.amountToBuy = 0;
   }
 
   ngOnInit(): void {
-    this.form.addControl('name', new FormControl(), { emitEvent: false });
+    this.form.addControl('name', new FormControl('Nombre un poco largo para probar'), { emitEvent: false });
     this.form.addControl('price', new FormControl(0.00), { emitEvent: false });
     this.form.addControl('discount', new FormControl(0), { emitEvent: false });
     this.form.addControl('brand', new FormControl(), { emitEvent: false });

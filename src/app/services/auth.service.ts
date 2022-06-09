@@ -106,7 +106,6 @@ export class AuthService {
         let customOptions = { headers: customHeaders };
         return this.http.post(`${this.url}/auth/refresh`, undefined, customOptions).pipe(
           tap(() => {
-            console.log("tapppp " + Date.now())
             this.refreshTokenInProgress.next(true);
             this.accessTokenSubject.next(undefined);
             this.refreshTokenSubject.next(undefined);

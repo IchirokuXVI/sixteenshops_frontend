@@ -5,6 +5,7 @@ import { Subject, Observable, first, finalize } from 'rxjs';
 import { BaseComponent } from '../base/base.component';
 import { RoleService } from 'src/app/services/role.service';
 import { Role } from 'src/app/models/role.model';
+import { AuthService } from '../../../../../../services/auth.service';
 
 @Component({
   selector: 'app-edit',
@@ -26,7 +27,8 @@ export class EditComponent implements OnInit {
   role_id!: string;
 
   constructor(public bsModalRef: BsModalRef,
-              private _roleServ: RoleService
+              private _roleServ: RoleService,
+              private _authServ: AuthService
   ) {
     this.roleForm = new FormGroup({
       name: new FormControl('', Validators.required)
@@ -75,4 +77,7 @@ export class EditComponent implements OnInit {
     });
   }
 
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
+  }
 }

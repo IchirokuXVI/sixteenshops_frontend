@@ -7,6 +7,7 @@ import { MatButton } from '@angular/material/button';
 import { ConfirmationService } from 'src/app/services/primeng/confirmation.service';
 import { NewComponent } from '../modal/form/new/new.component';
 import { EditComponent } from '../modal/form/edit/edit.component';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-list',
@@ -21,7 +22,8 @@ export class ListComponent implements OnInit {
 
   constructor(private _roleServ: RoleService,
               private _modalServ: BsModalService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private _authServ: AuthService
   ) {
     this.loading = false;
     this.roles = [];
@@ -103,4 +105,7 @@ export class ListComponent implements OnInit {
     icon.classList.add("fa-circle-notch", "fa-spin", "text-secondary");
   }
 
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
+  }
 }

@@ -5,6 +5,7 @@ import { catchError, finalize, throwError } from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { ConfirmationService } from 'src/app/services/primeng/confirmation.service';
 import { MessageService } from 'primeng/api';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'users-list',
@@ -23,7 +24,8 @@ export class ListComponent implements OnInit {
 
   constructor(private _userServ: UserService,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private _authServ: AuthService
   ) {
     this.users = [];
     this.loading = false;
@@ -82,5 +84,9 @@ export class ListComponent implements OnInit {
 
   public getAvatarPath(user: User) {
     return this._userServ.getAvatarPath(user, 'avatar');
+  }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
   }
 }

@@ -50,10 +50,10 @@
               </span>
           </td>
           <td class="text-center">
-            <button mat-icon-button color="primary" tooltip="Edit" [routerLink]="['.', user._id, 'edit']">
+            <button mat-icon-button color="primary" tooltip="Edit" *ngIf="hasPermission('editUser') | async" [routerLink]="['.', user._id, 'edit']">
               <i class="fas fa-pen"></i>
             </button>
-            <button #deleteButton mat-icon-button color="warn" tooltip="Delete" (click)="deleteUser(deleteButton, user, i)">
+            <button #deleteButton mat-icon-button color="warn" tooltip="Delete" *ngIf="hasPermission('deleteUser') | async" (click)="deleteUser(deleteButton, user, i)">
               <i class="fas fa-trash"></i>
             </button>
           </td>

@@ -32,7 +32,7 @@ export class NewComponent implements OnInit {
 
   submitForm(): void {
     this.submitted.next(true);
-
+    console.log(this.productForm.value);
     if (!this.productForm.valid)
       return;
 

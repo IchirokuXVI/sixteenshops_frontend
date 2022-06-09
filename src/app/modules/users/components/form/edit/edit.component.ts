@@ -66,6 +66,7 @@ export class EditComponent implements OnInit {
 
     this.loadingSubmit = true;
 
+    // Create an object with the user id and the value of the form
     let updatedUser: any = {
       _id: this.user?._id,
       ...this.userForm.value,
@@ -76,15 +77,29 @@ export class EditComponent implements OnInit {
       delete updatedUser.avatar;
     }
 
-    this._userServ.update(updatedUser, true).pipe(
-      finalize(() => this.loadingSubmit = false)
-    ).subscribe(() => {
-      this.messageServ.add({ severity: 'success', summary: 'Success', detail: 'User saved' });
-      if (this._authServ.user?._id == updatedUser._id) {
+    // If the user is editing the profile the endpoint changes
+    // So check if the profile is being edited or it is any user
+    if (this.profile) {
+      this._userServ.updateProfile(updatedUser).pipe(
+        finalize(() => this.loadingSubmit = false)
+      ).subscribe(() => {
+        this.messageServ.add({ severity: 'success', summary: 'Success', detail: 'Your profile has been saved' });
+
         // Refresh tokens because the user info might have changed
         this._authServ.refreshTokens().subscribe();
-      }
-    });
+      });
+    } else {
+      this._userServ.update(updatedUser, true).pipe(
+        finalize(() => this.loadingSubmit = false)
+      ).subscribe(() => {
+        this.messageServ.add({ severity: 'success', summary: 'Success', detail: 'User saved' });
+
+        if (this._authServ.user?._id == updatedUser._id) {
+          // Refresh tokens because the user info might have changed
+          this._authServ.refreshTokens().subscribe();
+        }
+      });
+    }
   }
 
   get avatarPath() {

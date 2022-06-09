@@ -18,20 +18,29 @@ export class ChipComponent implements ControlValueAccessor {
 
   @ViewChild('inputValue') inputValue!: ElementRef<HTMLDivElement>;
 
-  value?: string;
-  originalValue?: string = this.value;
+  value?: any;
+  originalValue?: any = this.value;
   visible: boolean = true;
-  showPlaceholder: boolean = !this.value;
+  showPlaceholder: boolean = true;
   editValue: boolean = false;
 
   @Input() placeholder?: string;
+  @Input() prefix?: string;
+  @Input() suffix?: string;
+  @Input() min?: number;
+  @Input() max?: number;
+  @Input() step: number = 1;
 
   @Input() disabled: boolean = false;
   @Input() editable: boolean = false;
   @Input() editDblClick: boolean = false;
   @Input() showEditButton: boolean = false;
+  @Input() selectable: boolean = false;
   @Input() active: boolean = false;
+  @Input() background: boolean = true;
   @Input() removable: boolean = false;
+  @Input() number: boolean = false;
+  @Input() showDecreaseIncrease: boolean = false;
 
   @Output() onRemove: EventEmitter<any> = new EventEmitter();
 
@@ -39,17 +48,69 @@ export class ChipComponent implements ControlValueAccessor {
   private _onTouched!: () => void;
 
   writeValue(value: any): void {
-    this.value = value || null;
+    this.value = value;
+    if (this.validValue()) {
+      this.showPlaceholder = false;
+      this.originalValue = value;
+    }
   }
 
   setDisabledState(isDisabled: boolean) {
     this.disabled = isDisabled;
   }
 
-  next(event: any) {
-    this.value = event.target.innerText;
-    this._onChange(event.target.innerText);
+  next(value: any): boolean {
+    let invalid = false;
+    if (value.toString().length > 0 && this.number) {
+      value = parseInt(value);
+
+      if (isNaN(value) || (this.min !== undefined && value < this.min) || (this.max !== undefined && value > this.max))
+        invalid = true;
+    }
+
+    if (invalid) {
+      console.log("invalid");
+
+      // Reset the value to before the user changed it
+      this.inputValue.nativeElement.innerText = this.value;
+      return false;
+    }
+
+    this.value = value;
+    this._onChange(value);
     this._onTouched();
+
+    return true;
+  }
+
+  increase() {
+    if (this.max && this.value > this.max)
+    return;
+
+    let value = parseInt(this.value);
+
+    if (isNaN(value))
+      value = 0;
+
+    if (this.next(value = value + this.step))
+      this.inputValue.nativeElement.innerText = value.toString(10);
+  }
+
+  decrease() {
+    if (this.min && this.value < this.min)
+    return;
+
+    let value = parseInt(this.value);
+
+    if (isNaN(value))
+      value = 0;
+
+    if (this.next(value = value - this.step))
+      this.inputValue.nativeElement.innerText = value.toString(10);
+  }
+
+  inputValueEvent(event: any) {
+    this.next(event.target.innerText);
   }
 
   focusValueEditSingle() {
@@ -71,8 +132,12 @@ export class ChipComponent implements ControlValueAccessor {
   }
 
   chipBlur() {
-    this.showPlaceholder = !this.value;
+    this.showPlaceholder = !this.validValue();
     this.editValue = false;
+  }
+
+  validValue() {
+    return this.value != null && this.value != undefined && this.value !== '' || (this.number && !isNaN(this.value));
   }
 
   registerOnChange(fn: (_: any) => void): void {

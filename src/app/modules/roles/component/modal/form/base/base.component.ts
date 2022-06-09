@@ -23,12 +23,18 @@ export class BaseComponent implements OnInit {
 
   permissions: Permission[];
 
+  canEdit: boolean = false;
+
   constructor(private _permissionServ: PermissionService,
               private _authServ: AuthService) {
     this.loading = false;
     this.permissions = [];
 
     this.permissionsFormArray = new FormArray([]);
+
+    this._authServ.localUserHasPermission('editRole').subscribe((has) => {
+      this.canEdit = has;
+    });
   }
 
   ngOnInit(): void {

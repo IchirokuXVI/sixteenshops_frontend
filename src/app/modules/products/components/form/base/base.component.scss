@@ -51,10 +51,18 @@
 }
 
 .product-info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
     margin-top: 2em;
 }
 
 .property {
+    display: flex;
+    flex-direction: row;
+    column-gap: 1em;
+    align-items: center;
+
     & .property-name {
         font-weight: bold;
     }

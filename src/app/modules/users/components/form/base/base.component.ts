@@ -5,6 +5,7 @@ import { CuentaComponent } from './cuenta/cuenta.component';
 import { UserService } from '../../../../../services/user.service';
 import { User } from 'src/app/models/user.model';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { AuthService } from '../../../../../services/auth.service';
 
 @Component({
   selector: 'usuario-form-base[form]',
@@ -25,8 +26,13 @@ export class BaseComponent implements OnInit {
   loadingData?: boolean;
 
   constructor(private _userServ: UserService,
-              private _modalServ: BsModalService
+              private _modalServ: BsModalService,
+              private _authServ: AuthService
   ) {  }
 
   ngOnInit(): void { }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
+  }
 }

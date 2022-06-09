@@ -2,7 +2,7 @@
   <ng-template pTemplate="caption">
     <div class="d-flex flex-row align-items-center">
         List of roles
-        <button class="ms-auto" mat-raised-button color="accent" (click)="openModalAdd()">
+        <button class="ms-auto" mat-raised-button color="accent" *ngIf="hasPermission('createRole') | async" (click)="openModalAdd()">
           <i class="fas fa-plus fa-sm me-2"></i>
           <span>Add new role</span>
         </button>
@@ -46,7 +46,7 @@
         <button mat-icon-button color="primary" tooltip="Edit" (click)="openModalUpdate(role)">
           <i class="fas fa-pen"></i>
         </button>
-        <button #deleteButton mat-icon-button color="warn" tooltip="Delete" (click)="deleteRole(deleteButton, role, i)">
+        <button #deleteButton mat-icon-button color="warn" tooltip="Delete" *ngIf="hasPermission('deleteRole')" (click)="deleteRole(deleteButton, role, i)">
           <i class="fas fa-trash"></i>
         </button>
       </td>

@@ -1,11 +1,11 @@
 <div class="modal-header">
-  <h4 class="modal-title my-auto">Edit role {{ '"' + role?.name + '"' }}</h4>
+  <h4 class="modal-title my-auto">Role {{ '"' + role?.name + '"' }}</h4>
   <button mat-icon-button (click)="bsModalRef.hide()">
     <i class="fas fa-times"></i>
   </button>
 </div>
 <role-modal-form-base *ngIf="role" [form]="roleForm" [role]="role"></role-modal-form-base>
-<div class="modal-footer">
+<div class="modal-footer" *ngIf="hasPermission('editRole') | async">
   <div class="d-flex flex-row">
     <button mat-raised-button color="warn" (click)="bsModalRef.hide()" class="me-4">
       Cancel

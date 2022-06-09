@@ -1,15 +1,31 @@
-<div class="chip" [class.cursor-text]="!value" (click)="focusValueEditSingle()" (dblclick)="focusValueEditDouble()" [class.active]="active" *ngIf="visible">
+<div class="chip" [class.with-background]="background" [class.cursor-text]="!validValue()" (click)="focusValueEditSingle()" (dblclick)="focusValueEditDouble()" [class.active]="active" *ngIf="visible">
+  <div class="chip-number-actions" *ngIf="editable && number && showDecreaseIncrease">
+    <span class="chip-decrease" (click)="decrease()" tooltip="Decrease" container="body">
+      <i class="fas fa-minus"></i>
+    </span>
+  </div>
   <div class="chip-placeholder unselectable" *ngIf="showPlaceholder">
     {{ placeholder }}
   </div>
-  <div #inputValue class="chip-value" [class.chip-hide-value]="showPlaceholder" [class.unselectable]="!editValue" (blur)="chipBlur()" [contentEditable]="editValue" (input)="next($event)">
+  <div class="chip-prefix unselectable" *ngIf="prefix">
+    {{ prefix }}
+  </div>
+  <div #inputValue class="chip-value" [class.chip-hide-value]="showPlaceholder" [class.unselectable]="selectable && !editValue" (blur)="chipBlur()" [contentEditable]="editValue" (input)="inputValueEvent($event)">
     {{ originalValue }}
   </div>
-  <div class="chip-actions">
-    <span class="chip-edit" (click)="focusValueEdit()" *ngIf="editable && showEditButton" tooltip="Edit">
+  <div class="chip-suffix unselectable" *ngIf="suffix">
+    {{ suffix }}
+  </div>
+  <div class="chip-number-actions" *ngIf="editable && number && showDecreaseIncrease">
+    <span class="chip-increase" (click)="increase()" tooltip="Increase" container="body">
+      <i class="fas fa-plus"></i>
+    </span>
+  </div>
+  <div class="chip-actions" *ngIf="removable || (editable && showEditButton)">
+    <span class="chip-edit" (click)="focusValueEdit()" *ngIf="editable && showEditButton" tooltip="Edit" container="body">
       <i class="fas fa-edit"></i>
     </span>
-    <span class="chip-remove" (click)="remove()" *ngIf="removable" tooltip="Remove">
+    <span class="chip-remove" (click)="remove()" *ngIf="removable" tooltip="Remove" container="body">
       <i class="fas fa-times"></i>
     </span>
   </div>

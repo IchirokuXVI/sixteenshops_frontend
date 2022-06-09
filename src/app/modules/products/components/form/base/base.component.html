@@ -1,126 +1,112 @@
 <div class="row" [formGroup]="form">
-    <div class="col-lg-10 mx-auto">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="product-images">
-                  <img src="assets/img/default-product.png" class="product-img mx-auto">
-                  <div class="product-images-miniatures">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
-                    <img src="assets/img/default-product.png" class="product-miniature-img">
+  <div class="col-lg-10 mx-auto">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="product-images">
+          <img src="assets/img/default-product.png" class="product-img mx-auto" />
+          <div class="product-images-miniatures">
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <img src="assets/img/default-product.png" class="product-miniature-img" />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="product-heading">
+          <h1 class="h4">
+            <chip formControlName="name" placeholder="Product name" [background]="false" [editable]="true"
+              [showEditButton]="true"></chip>
+          </h1>
+
+          <div class="pricing">
+            <span class="price me-3">
+              <chip formControlName="price" placeholder="Price" suffix="€" [background]="false" [editable]="true"
+                [editDblClick]="true" [number]="true" [min]="0">
+              </chip>
+            </span>
+            <chip formControlName="discount" placeholder="Discount" suffix="%" [background]="false" [editable]="true"
+              [editDblClick]="true" [number]="true" [min]="0" [max]="100"></chip>
+            <span class="price-discount" *ngIf="!editingProduct">
+              <span>
+                <span class="discount">18 %</span><span> dto.</span>
+              </span>
+              <span class="price-before">
+                {{ product?.price }}
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="property">
+            <label for="inputBrand" class="property-name">
+              Brand:
+            </label>
+            <chip id="inputBrand" formControlName="brand" [background]="false" placeholder="Brand" [editable]="true"
+              [showEditButton]="true">
+            </chip>
+          </div>
+          <div class="property">
+            <label for="inputStock" class="property-name">
+              Stock:
+            </label>
+            <chip formControlName="stock" [background]="false" placeholder="Stock" [editable]="true" [number]="true"
+              [showDecreaseIncrease]="true" [editDblClick]="true" [min]="0" [max]="999">
+            </chip>
+          </div>
+          <div class="property" *ngIf="!editingProduct">
+            <label for="inputStock" class="property-name">
+              Amount:
+            </label>
+            <chip [(ngModel)]="amountToBuy" [ngModelOptions]="{standalone: true}" [background]="false"
+              placeholder="Amount" [editable]="true" [number]="true" [showDecreaseIncrease]="true" [editDblClick]="true"
+              [min]="0" [max]="99">
+            </chip>
+          </div>
+        </div>
+        <div>
+          <div class="product-options-groups" formArrayName="optionGroups">
+            <div class="option-group" [formGroupName]="groupIndex" *ngFor="
+                let group of optionGroupsForm.controls;
+                let groupIndex = index
+              ">
+              <div class="group-name">
+                <chip formControlName="name" (onRemove)="deleteOptionGroup(groupIndex)" [editable]="true"
+                  [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Group"></chip>
+              </div>
+              <div class="group-options" formArrayName="options">
+                <div class="option" [formGroupName]="optionIndex" *ngFor="
+                    let option of getOptionGroupOptions(group).controls;
+                    let optionIndex = index;
+                    let isLast = last
+                  ">
+                  <div class="p-inputgroup">
+                    <chip formControlName="name" (onRemove)="deleteOptionGroupOption(group, optionIndex)"
+                      [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true"
+                      placeholder="Option"></chip>
                   </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="product-heading">
-                    <h1 class="h4" *ngIf="!editingProduct">
-                        Nombre del producto un poco largo para probar
-                    </h1>
-
-                    <div class="p-inputgroup mb-4" *ngIf="editingProduct">
-                        <span class="p-float-label">
-                            <input formControlName="name" id="inputName" pInputText>
-                            <label for="inputName">Product name</label>
-                        </span>
-                    </div>
-
-                    <div class="pricing">
-                        <span class="p-float-label">
-                            <p-inputNumber inputId="inputPrice" formControlName="price" mode="currency" currency="EUR" locale="es-ES"></p-inputNumber>
-                            <label for="inputPrice">Price</label>
-                        </span>
-                        <span class="price" *ngIf="!editingProduct">
-                            {{ editingProduct ? form.get('price')?.value * ((100 - form.get('discount')?.value) / 100) : product?.price || 0 * ((100 - (product?.discount || 0)) / 100) }}€
-                        </span>
-                        <span class="p-float-label ms-2">
-                            <p-inputNumber inputId="inputDiscount" formControlName="discount" suffix="%"></p-inputNumber>
-                            <label for="inputDiscount">Discount</label>
-                        </span>
-                        <span class="price-discount" *ngIf="!editingProduct">
-                            <span>
-                                <span class="discount">18 %</span><span> dto.</span>
-                            </span>
-                            <span class="price-before">
-                                {{ product?.price }}
-                            </span>
-                        </span>
-                    </div>
-                </div>
-                <div class="row product-info">
-                    <div class="col-12">
-                        <div class="row property" *ngIf="!editingProduct">
-                            <div class="col-2 property-name">
-                                Brand:
-                            </div>
-                            <div class="col-10">
-                                Newskill and longer
-                            </div>
-                        </div>
-                        <div class="p-inputgroup" *ngIf="editingProduct">
-                            <span class="p-float-label">
-                                <input formControlName="brand" id="inputBrand" pInputText>
-                                <label for="inputBrand">Brand</label>
-                            </span>
-                        </div>
-                        <div class="row property" *ngIf="!editingProduct">
-                            <div class="col-2 property-name">
-                                Stock:
-                            </div>
-                            <div class="col-10">
-                                190
-                            </div>
-                        </div>
-                        <div class="p-inputgroup mt-3" *ngIf="editingProduct">
-                            <span class="p-float-label">
-                                <input formControlName="stock" id="inputStock" pInputText>
-                                <label for="inputStock">Stock</label>
-                            </span>
-                        </div>
-                        <div class="row property" *ngIf="!editingProduct">
-                            <div class="col-2 property-name">
-                                Amount:
-                            </div>
-                            <div class="col-2">
-                                <p-inputNumber mode="decimal" [min]="0" [showButtons]="true" buttonLayout="vertical" spinnerMode="vertical"
-                                    decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="product-options-groups" formArrayName="optionGroups">
-                        <div class="option-group" [formGroupName]="groupIndex" *ngFor="let group of optionGroupsForm.controls; let groupIndex = index">
-                            <div class="group-name">
-                                <chip formControlName="name" (onRemove)="deleteOptionGroup(groupIndex)" [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Group name"></chip>
-                            </div>
-                            <div class="group-options" formArrayName="options">
-                                <div class="option" [formGroupName]="optionIndex" *ngFor="let option of getOptionGroupOptions(group).controls; let optionIndex = index; let isLast = last">
-                                    <div class="p-inputgroup">
-                                        <chip formControlName="name" (onRemove)="deleteOptionGroupOption(group, optionIndex)" [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Option name"></chip>
-                                    </div>
-                                </div>
-                                <button mat-mini-fab color="accent" (click)="addOption(group)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button mat-raised-button class="save-button mt-3" color="accent" (click)="addOptionGroup()">
-                    <i class="fas fa-plus me-2"></i>
-                    <span>Add new option group</span>
+                <button mat-mini-fab color="accent" (click)="addOption(group)">
+                  <i class="fas fa-plus"></i>
                 </button>
-                <div class="product-actions">
-                    <button mat-raised-button class="product-buy" color="accent" *ngIf="!editingProduct">
-                        <mat-icon class="me-2">shopping_cart</mat-icon>
-                        <span>Buy</span>
-                    </button>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
+        <button mat-raised-button class="save-button mt-3" color="accent" (click)="addOptionGroup()">
+          <i class="fas fa-plus me-2"></i>
+          <span>Add new option group</span>
+        </button>
+        <div class="product-actions">
+          <button mat-raised-button class="product-buy" color="accent" *ngIf="!editingProduct">
+            <mat-icon class="me-2">shopping_cart</mat-icon>
+            <span>Buy</span>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

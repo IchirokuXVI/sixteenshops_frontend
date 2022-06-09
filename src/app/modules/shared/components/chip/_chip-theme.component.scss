@@ -10,7 +10,13 @@
   $warn-palette: map.get($color-config, 'warn');
 
   .chip {
-    background-color: #bababa37;
+    &.active {
+      border: 2px solid map.get($accent-palette, 'default');
+    }
+
+    &.with-background {
+      background-color: #bababa37;
+    }
   }
 
   .chip-remove {
