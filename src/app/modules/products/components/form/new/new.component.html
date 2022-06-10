@@ -1,6 +1,6 @@
 <product-form-base [form]="productForm"></product-form-base>
 <div class="d-flex mt-5">
-  <button mat-raised-button class="ms-5" color="accent" (click)="submitForm()">
+  <button mat-raised-button class="ms-5" color="accent" (click)="submitForm()" [disabled]="loadingSubmit">
     <i class="fas fa-plus me-2"></i>
     <span>Create product</span>
   </button>

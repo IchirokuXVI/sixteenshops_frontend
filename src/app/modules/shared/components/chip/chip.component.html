@@ -1,4 +1,4 @@
-<div class="chip" [class.with-background]="background" [class.cursor-text]="!validValue()" (click)="focusValueEditSingle()" (dblclick)="focusValueEditDouble()" [class.active]="active" *ngIf="visible">
+<div class="chip" [class.with-background]="background || likeInput" [class.cursor-text]="!validValue() || likeInput" (click)="chipSingleClick()" (dblclick)="focusValueEditDouble()" [class.active]="active" *ngIf="visible">
   <div class="chip-number-actions" *ngIf="editable && number && showDecreaseIncrease">
     <span class="chip-decrease" (click)="decrease()" tooltip="Decrease" container="body">
       <i class="fas fa-minus"></i>
@@ -25,7 +25,7 @@
     <span class="chip-edit" (click)="focusValueEdit()" *ngIf="editable && showEditButton" tooltip="Edit" container="body">
       <i class="fas fa-edit"></i>
     </span>
-    <span class="chip-remove" (click)="remove()" *ngIf="removable" tooltip="Remove" container="body">
+    <span class="chip-remove" (click)="remove()" *ngIf="removable && !active" tooltip="Remove" container="body">
       <i class="fas fa-times"></i>
     </span>
   </div>

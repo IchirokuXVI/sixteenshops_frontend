@@ -48,8 +48,8 @@ export class NewComponent implements OnInit {
 
     this._productServ.create(product, true).pipe(
       finalize(() => this.loadingSubmit = false)
-    ).subscribe(() => {
-      this.router.navigate(["/products"]);
+    ).subscribe((res) => {
+      this.router.navigate(["/products", res, 'edit']);
     });
   }
 

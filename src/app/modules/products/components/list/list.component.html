@@ -38,15 +38,15 @@
               <span class="p-column-title">
                 Option groups
               </span>
-              <span class="p-2 me-2 bg-primary text-light rounded" *ngFor="let group of product.optionGroups;">
+              <span class="p-2 me-2 rounded optionGroups" *ngFor="let group of product.optionGroups;">
                   {{ group.name }}
               </span>
           </td>
           <td class="text-center">
-              <button mat-icon-button color="primary" tooltip="Edit" [routerLink]="['.', product._id, 'edit']">
+              <button mat-icon-button color="primary" tooltip="Edit" *ngIf="hasPermission('editProduct') | async" [routerLink]="['.', product._id, 'edit']">
                   <i class="fas fa-pen"></i>
               </button>
-              <button #deleteButton mat-icon-button color="warn" tooltip="Delete" (click)="deleteProduct(deleteButton, product, i)">
+              <button #deleteButton mat-icon-button color="warn" tooltip="Delete" *ngIf="hasPermission('deleteProduct') | async" (click)="deleteProduct(deleteButton, product, i)">
                 <i class="fas fa-trash"></i>
               </button>
           </td>

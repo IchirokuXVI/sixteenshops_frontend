@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RedirectLoginGuard } from './guards/redirect-login.guard';
 import { AuthGuard } from './guards/auth.guard';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { AdminLayoutComponent } from './modules/shared/components/admin-layout/admin-layout.component';
 
 const routes: Routes = [
@@ -22,6 +21,11 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'dashboard'
+      },
+      {
         path: 'dashboard',
         loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule),
       },
@@ -36,6 +40,10 @@ const routes: Routes = [
       {
         path: 'roles',
         loadChildren: () => import('./modules/roles/roles.module').then(m => m.RolesModule),
+      },
+      {
+        path: '**',
+        redirectTo: ''
       }
     ]
   },

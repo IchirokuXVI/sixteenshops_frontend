@@ -1,12 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, first, Observable } from 'rxjs';
+import { Combination } from 'src/app/models/combination.model';
 import { Product } from 'src/app/models/product.model';
 import { CropperModalComponent } from 'src/app/modules/shared/components/cropper-modal/cropper-modal.component';
+import { CombinationService } from 'src/app/services/combination.service';
 import { ProductService } from 'src/app/services/product.service';
+import { ChipComponent } from '../../../../shared/components/chip/chip.component';
 
 @Component({
   selector: 'product-form-base[form]',
@@ -16,21 +19,31 @@ import { ProductService } from 'src/app/services/product.service';
 export class BaseComponent implements OnInit {
 
   @Input() form!: FormGroup; // Required
-  @Input() product?: Product;
+  @Input() $product?: Observable<Product | undefined>;
+  product?: Product;
   @Input() $submitted?: BehaviorSubject<boolean>;
+
+  @Output() submitProduct: EventEmitter<any> = new EventEmitter();
+  @Output() submitCombination: EventEmitter<any> = new EventEmitter();
+  @Output() combination: EventEmitter<Combination | undefined> = new EventEmitter();
+  $combination?: Combination;
 
   selectedImg?: string;
   productImgs: string[];
+
+  selectedOptions: { [key: string]: { _id: string, chip: ChipComponent } } = {};
 
   optionGroupsForm: FormArray;
 
   loadingData?: boolean;
 
   editingProduct: boolean;
+  editingInfo: boolean;
 
   amountToBuy: number;
 
   constructor(private _productServ: ProductService,
+              private _combinationServ: CombinationService,
               private _modalServ: BsModalService,
               private messageServ: MessageService,
               private sanitizer: DomSanitizer,
@@ -38,6 +51,7 @@ export class BaseComponent implements OnInit {
     this.productImgs = [];
 
     this.editingProduct = true;
+    this.editingInfo = false;
 
     this.optionGroupsForm = new FormArray([]);
 
@@ -46,8 +60,8 @@ export class BaseComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.addControl('name', new FormControl(), { emitEvent: false });
-    this.form.addControl('price', new FormControl(0.00), { emitEvent: false });
-    this.form.addControl('discount', new FormControl(0), { emitEvent: false });
+    this.form.addControl('price', new FormControl(), { emitEvent: false });
+    this.form.addControl('discount', new FormControl(), { emitEvent: false });
     this.form.addControl('brand', new FormControl(), { emitEvent: false });
     this.form.addControl('stock', new FormControl(0), { emitEvent: false });
 
@@ -55,29 +69,52 @@ export class BaseComponent implements OnInit {
 
     this.form.addControl('optionGroups', this.optionGroupsForm, { emitEvent: false });
 
-    if (this.product) {
-      this.generateOptions();
+    this.optionGroupsForm.valueChanges.subscribe(() => {
+      console.log("value changes");
 
-      this.form.patchValue(this.product);
+    });
 
-      if (this.product.images) {
-        this.productImgs = this.product.images.map((img) => this._productServ.imagesPath + "/" + this.product?._id + "/" + img);
+    // When the first product that isn't undefined is emitted
+    // change the form to editing
+    this.$product?.pipe(
+      filter((product) => product !== undefined),
+      first()
+    ).subscribe((product) => {
+      this.editingProduct = true;
+      this.generateOptions(product!);
+
+      if (product!.images) {
+        this.productImgs = product!.images.map((img) => this._productServ.imagesPath + "/" + product!._id + "/" + img);
 
         this.selectedImg = this.productImgs[0];
       }
-    }
+
+      // Every time the product is updated patch the value of the form and update the local variable
+      this.$product?.pipe(
+        filter((product) => product !== undefined),
+      ).subscribe((product) => {
+        this.product = product;
+
+        if (!this.$combination)
+          this.form.patchValue(product!, { emitEvent: false });
+      });
+    });
   }
 
-  generateOptions() {
-    if (this.product && this.product.optionGroups) {
-      for (let optionGroup of this.product.optionGroups) {
+  /**
+   * Generate the controls needed to display the product.
+   * @param product The product that beholds the options
+   */
+  generateOptions(product: Product) {
+    if (product && product.optionGroups) {
+      for (let optionGroup of product.optionGroups) {
         let optionsControls = new FormArray([]);
 
         this.optionGroupsForm.push(new FormGroup({
           _id: new FormControl(),
           name: new FormControl(),
           options: optionsControls
-        }));
+        }), { emitEvent: false });
 
         if (optionGroup.options) {
           for (let option of optionGroup.options) {
@@ -87,6 +124,72 @@ export class BaseComponent implements OnInit {
             }));
           }
         }
+      }
+    }
+  }
+
+  /**
+   * Reset the info form to its previous state before editing
+   */
+  cancelInfo() {
+    if (this.$combination){
+      this.form.patchValue(this.$combination);
+    } else {
+      this.form.patchValue(this.product!);
+    }
+
+    this.editingInfo = false;
+  }
+
+  /**
+   * Saves the info of the product, or the combination if there is one selected
+   */
+  saveInfo() {
+    if (this.$combination)
+      this.submitCombination.emit();
+    else
+      this.submitProduct.emit();
+
+    this.editingInfo = false;
+  }
+
+  /**
+   * Unselects all options and load the product data again
+   */
+  resetSelection() {
+    Object.entries(this.selectedOptions).map((item) => item[1].chip.active = false);
+
+    this.selectedOptions = { };
+    this.combination.next(undefined);
+    this.$combination = undefined;
+
+    this.form.patchValue(this.product!);
+  }
+
+  /**
+   * Add an option to the selected array and activate its chip to let the user know which options are selected
+   * If an option of every group is selected then load the combination for that set of options
+   * @param group_id Group of the option
+   * @param option_id The option to select
+   * @param optionChip The chip displaying the option
+   */
+  selectOption(group_id: string, option_id: string, optionChip: ChipComponent) {
+    if (this.product && !this.editingInfo) {
+      let previousSelectedOption = this.selectedOptions[group_id];
+
+      if (previousSelectedOption)
+        this.selectedOptions[group_id].chip.active = false;
+
+      optionChip.active = true;
+      this.selectedOptions[group_id] =  { _id: option_id, chip: optionChip };
+
+      if (Object.keys(this.selectedOptions).length === this.optionGroupsForm.controls.length) {
+        this._combinationServ.getByOptions(Object.entries(this.selectedOptions).map((item) => item[1]._id)).subscribe((combination) => {
+          this.$combination = combination;
+          this.combination.emit(combination);
+
+          this.form.patchValue(combination, { emitEvent: false });
+        });
       }
     }
   }
@@ -111,15 +214,29 @@ export class BaseComponent implements OnInit {
     (optionGroup.get('options') as FormArray).removeAt(index);
   }
 
+  /**
+   * Add an option to a group of options
+   * @param optionGroup The group to add the option
+   */
   addOption(optionGroup: AbstractControl) {
-    (optionGroup.get('options') as FormArray).push(new FormGroup({ name: new FormControl() }));
+    (optionGroup.get('options') as FormArray).push(new FormGroup({ _id: new FormControl(undefined), name: new FormControl() }));
+    this.submitProduct.emit();
   }
 
+  /**
+   * Remove an img from the product
+   * @param index Index of the image in the array
+   */
   removeImg(index: number) {
     this.productImgs.splice(index, 1);
     this.form.get('images')?.value.splice(index, 1);
   }
 
+  /**
+   * Open a modal to crop the selected image and add it to the array of images
+   * @param event Input file event. Holds a reference to the selected file
+   * @returns
+   */
   openCropModal(event: any) {
     if (!event.target.files[0]) {
       return;
@@ -168,6 +285,11 @@ export class BaseComponent implements OnInit {
     });
   }
 
+  /**
+   * Sanitize an URL. Used for blob images
+   * @param url Url to sanitize
+   * @returns
+   */
   sanitizeUrl(url?: string) {
     if (url)
       return this.sanitizer.bypassSecurityTrustUrl(url);

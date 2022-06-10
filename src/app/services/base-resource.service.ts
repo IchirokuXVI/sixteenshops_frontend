@@ -50,6 +50,9 @@ export class BaseResourceService<T extends BaseResource> {
     let form = new FormData();
 
     Object.keys(data).forEach((key)=>{
+      if (key === '_id' && (data[key] === null || data[key] === undefined))
+        return;
+
       if(data[key] && data[key].name) {
         form.set(key, data[key], data[key].name);
       } else if (data[key] !== undefined) {
@@ -59,7 +62,6 @@ export class BaseResourceService<T extends BaseResource> {
         //   toSet = JSON.stringify(toSet);
 
         if (this.validProcessableObject(data[key]) && typeof(data[key]) === 'object') {
-          console.log(data[key] instanceof Blob)
           this.recursiveMultipart(key, data[key], form);
         } else {
           form.set(key, data[key]);
@@ -73,10 +75,12 @@ export class BaseResourceService<T extends BaseResource> {
   // Dot formatted
   protected recursiveMultipart(fieldname: string, data: Object, formData: FormData) {
     for (let [key, value] of Object.entries(data)) {
-      if (this.validProcessableObject(value) && typeof(value) === 'object') {
-        this.recursiveMultipart(fieldname + '.' + key, value, formData);
-      } else {
-        formData.set(fieldname + '.' + key, value);
+      if (key !== '_id' || (value !== null && value !== undefined)) {
+        if (this.validProcessableObject(value) && typeof(value) === 'object') {
+          this.recursiveMultipart(fieldname + '.' + key, value, formData);
+        } else {
+          formData.set(fieldname + '.' + key, value);
+        }
       }
     }
   }

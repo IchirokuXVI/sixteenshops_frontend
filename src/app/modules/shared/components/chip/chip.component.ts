@@ -31,6 +31,8 @@ export class ChipComponent implements ControlValueAccessor {
   @Input() max?: number;
   @Input() step: number = 1;
 
+  @Input() likeInput: boolean = false;
+
   @Input() disabled: boolean = false;
   @Input() editable: boolean = false;
   @Input() editDblClick: boolean = false;
@@ -48,10 +50,21 @@ export class ChipComponent implements ControlValueAccessor {
   private _onTouched!: () => void;
 
   writeValue(value: any): void {
+    console.log(value);
+    console.log(this.validValue());
+
+
     this.value = value;
+    this.originalValue = value;
+
     if (this.validValue()) {
       this.showPlaceholder = false;
-      this.originalValue = value;
+      if (this.inputValue)
+        this.inputValue.nativeElement.innerText = value;
+    } else {
+      this.showPlaceholder = true;
+      if (this.inputValue)
+        this.inputValue.nativeElement.innerText = '';
     }
   }
 
@@ -69,8 +82,6 @@ export class ChipComponent implements ControlValueAccessor {
     }
 
     if (invalid) {
-      console.log("invalid");
-
       // Reset the value to before the user changed it
       this.inputValue.nativeElement.innerText = this.value;
       return false;
@@ -113,8 +124,8 @@ export class ChipComponent implements ControlValueAccessor {
     this.next(event.target.innerText);
   }
 
-  focusValueEditSingle() {
-    if (this.editable && this.showPlaceholder) {
+  chipSingleClick() {
+    if (this.editable && this.showPlaceholder || this.likeInput) {
       this.focusValueEdit();
     }
   }
@@ -137,7 +148,16 @@ export class ChipComponent implements ControlValueAccessor {
   }
 
   validValue() {
-    return this.value != null && this.value != undefined && this.value !== '' || (this.number && !isNaN(this.value));
+    if (this.value === null || this.value === undefined)
+      return false;
+
+    if (this.number && isNaN(this.value))
+      return false;
+
+    if (typeof(this.value) === 'string' && this.value.length < 1)
+      return false;
+
+    return true;
   }
 
   registerOnChange(fn: (_: any) => void): void {

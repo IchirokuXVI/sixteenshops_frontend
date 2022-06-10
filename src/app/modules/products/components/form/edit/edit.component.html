@@ -1,7 +1,1 @@
-<product-form-base *ngIf="product" [form]="productForm" [product]="product"></product-form-base>
-<div class="d-flex mt-5">
-  <button mat-raised-button class="ms-5" color="accent" (click)="submitForm()">
-    <i class="fas fa-plus me-2"></i>
-    <span>Edit product</span>
-  </button>
-</div>
+<product-form-base *ngIf="product" [form]="productForm" (submitProduct)="submitProduct()" (submitCombination)="submitCombination()" [$product]="$product" (combination)="selectCombination($event)"></product-form-base>

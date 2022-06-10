@@ -24,7 +24,8 @@ export class ListComponent implements OnInit {
 
   constructor(private _productServ: ProductService,
               private messageService: MessageService,
-              private confirmationService: ConfirmationService
+              private confirmationService: ConfirmationService,
+              private _authServ: AuthService
   ) {
     this.products = [];
     this.loading = false;
@@ -79,5 +80,9 @@ export class ListComponent implements OnInit {
   private iconTrashToSpin(icon: any) {
     icon.classList.remove("fa-trash", "text-danger");
     icon.classList.add("fa-circle-notch", "fa-spin", "text-secondary");
+  }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
   }
 }

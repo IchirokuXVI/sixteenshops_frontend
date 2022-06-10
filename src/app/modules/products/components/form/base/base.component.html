@@ -21,19 +21,29 @@
       </div>
       <div class="col-xxl-6">
         <div class="product-heading">
-          <h1 class="h4">
-            <chip formControlName="name" placeholder="Product name" [background]="false" [editable]="true"
-              [showEditButton]="true"></chip>
+          <h1 class="h4 d-flex">
+            <chip formControlName="name" placeholder="Product name" [background]="false" [editable]="editingInfo" [likeInput]="!product || editingInfo"></chip>
+            <span class="ms-auto" *ngIf="product">
+              <span class="clickable" *ngIf="!editingInfo" tooltip="Edit product info" container="body"b (click)="editingInfo = true">
+                <i class="fas fa-edit"></i>
+              </span>
+              <span class="clickable saveProductDisk me-4" *ngIf="editingInfo" (click)="saveInfo()" tooltip="Save info" container="body">
+                <i class="fas fa-floppy-disk"></i>
+              </span>
+              <span class="clickable cancelInfoIcon" *ngIf="editingInfo" (click)="cancelInfo()" tooltip="Discard changes" container="body">
+                <i class="fas fa-times"></i>
+              </span>
+            </span>
           </h1>
 
           <div class="pricing">
             <span class="price me-3">
-              <chip formControlName="price" placeholder="Price" suffix="€" [background]="false" [editable]="true"
-                [editDblClick]="true" [number]="true" [min]="0">
+              <chip formControlName="price" placeholder="Price" suffix="€" [background]="false" [editable]="editingInfo"
+                [number]="true" [min]="0" [likeInput]="!product || editingInfo">
               </chip>
             </span>
-            <chip formControlName="discount" placeholder="Discount" suffix="%" [background]="false" [editable]="true"
-              [editDblClick]="true" [number]="true" [min]="0" [max]="100"></chip>
+            <chip formControlName="discount" placeholder="Discount" suffix="%" [background]="false" [editable]="editingInfo"
+              [number]="true" [min]="0" [max]="100" [likeInput]="!product || editingInfo"></chip>
             <span class="price-discount" *ngIf="!editingProduct">
               <span>
                 <span class="discount">18 %</span><span> dto.</span>
@@ -45,20 +55,20 @@
           </div>
         </div>
         <div class="product-info">
-          <div class="property">
+          <div class="property" *ngIf="!product || product.brand || (editingInfo && !$combination)">
             <label for="inputBrand" class="property-name">
               Brand:
             </label>
-            <chip id="inputBrand" formControlName="brand" [background]="false" placeholder="Brand" [editable]="true"
-              [showEditButton]="true">
+            <chip id="inputBrand" formControlName="brand" [background]="false" placeholder="Brand" [editable]="!product || editingInfo"
+              [likeInput]="!product || editingInfo">
             </chip>
           </div>
           <div class="property">
             <label for="inputStock" class="property-name">
               Stock:
             </label>
-            <chip formControlName="stock" [background]="false" placeholder="Stock" [editable]="true" [number]="true"
-              [showDecreaseIncrease]="true" [editDblClick]="true" [min]="0" [max]="999">
+            <chip formControlName="stock" [background]="false" placeholder="Stock" [editable]="!product || editingInfo" [number]="true"
+              [showDecreaseIncrease]="true" [likeInput]="!product || editingInfo" [min]="0" [max]="999">
             </chip>
           </div>
           <div class="property" *ngIf="!editingProduct">
@@ -73,38 +83,44 @@
         </div>
         <div>
           <div class="product-options-groups" formArrayName="optionGroups">
+            <div *ngIf="$combination && !editingInfo" class="my-3">
+              <button mat-raised-button class="product-buy" color="warn" (click)="resetSelection()">
+                <span>Reset selection</span>
+              </button>
+            </div>
             <div class="option-group" [formGroupName]="groupIndex" *ngFor="
                 let group of optionGroupsForm.controls;
                 let groupIndex = index
               ">
               <div class="group-name">
-                <chip formControlName="name" (onRemove)="deleteOptionGroup(groupIndex)" [editable]="true"
-                  [editDblClick]="true" [showEditButton]="true" [removable]="true" placeholder="Group"></chip>
+                <chip formControlName="name" (onRemove)="deleteOptionGroup(groupIndex)" [background]="!editingInfo" [editable]="!editingInfo"
+                  [editDblClick]="true" [showEditButton]="true" [removable]="!editingInfo" placeholder="Group"></chip>
               </div>
               <div class="group-options" formArrayName="options">
                 <div class="option" [formGroupName]="optionIndex" *ngFor="
                     let option of getOptionGroupOptions(group).controls;
                     let optionIndex = index;
-                    let isLast = last
-                  ">
-                  <div class="p-inputgroup">
-                    <chip formControlName="name" (onRemove)="deleteOptionGroupOption(group, optionIndex)"
-                      [editable]="true" [editDblClick]="true" [showEditButton]="true" [removable]="true"
-                      placeholder="Option"></chip>
-                  </div>
+                    let isLast = last">
+                  <chip #optionChip (click)="selectOption(group.value._id, option.value._id, optionChip)" formControlName="name" (onRemove)="deleteOptionGroupOption(group, optionIndex)"
+                    [editable]="!editingInfo" [editDblClick]="true" [showEditButton]="true" [removable]="!editingInfo"
+                    placeholder="Option"></chip>
                 </div>
-                <button mat-mini-fab color="accent" (click)="addOption(group)">
+                <button mat-mini-fab color="accent" *ngIf="!editingInfo" (click)="addOption(group)">
                   <i class="fas fa-plus"></i>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        <button mat-raised-button class="save-button mt-3" color="accent" (click)="addOptionGroup()">
+        <button mat-raised-button class="save-button mt-3" color="accent" *ngIf="!editingInfo" (click)="addOptionGroup()">
           <i class="fas fa-plus me-2"></i>
           <span>Add new option group</span>
         </button>
         <div class="product-actions">
+          <button mat-raised-button class="save-button ms-auto" color="accent" *ngIf="product && !editingInfo" (click)="submitProduct.emit()">
+            <i class="fas fa-plus me-2"></i>
+            <span>Save product</span>
+          </button>
           <button mat-raised-button class="product-buy" color="accent" *ngIf="!editingProduct">
             <mat-icon class="me-2">shopping_cart</mat-icon>
             <span>Buy</span>

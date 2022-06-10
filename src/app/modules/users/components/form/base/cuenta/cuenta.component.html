@@ -60,7 +60,7 @@
             </div>
           </div>
         </div>
-        <div class="row mb-4 mb-md-0">
+        <div class="row mb-4 mb-md-0" *ngIf="hasPermission('editUserPermissions') | async">
             <div class="col-12">
               <div class="col-12 d-flex">
                   <p-dropdown id="inputRole" (onChange)="updatePermissions($event)" [showClear]="true" formControlName="role" class="d-flex flex-fill"

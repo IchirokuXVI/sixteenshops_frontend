@@ -61,6 +61,7 @@ $theme: $dark-theme;
 @use './app/modules/shared/components/navbar/navbar-theme.component' as navbar;
 @use './app/modules/users/components/form/base/cuenta/cuenta-theme.component' as usuarioFormCuenta;
 @use './app/modules/products/components/form/base/base-theme.component' as productBaseForm;
+@use './app/modules/products/components/list/list-theme.component' as productList;
 
 @include mat.all-component-themes($theme);
 @include app.theme($theme);
@@ -69,6 +70,7 @@ $theme: $dark-theme;
 @include navbar.theme($theme);
 @include usuarioFormCuenta.theme($theme);
 @include productBaseForm.theme($theme);
+@include productList.theme($theme);
 
 @import '/node_modules/primeng/resources/themes/md-dark-indigo/theme';
 
@@ -121,6 +123,7 @@ body.light-theme {
   @include navbar.theme($theme);
   @include usuarioFormCuenta.theme($theme);
   @include productBaseForm.theme($theme);
+  @include productList.theme($theme);
 
   @import '/node_modules/primeng/resources/themes/md-light-indigo/theme';
 }

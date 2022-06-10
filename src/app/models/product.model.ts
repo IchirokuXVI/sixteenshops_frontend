@@ -3,6 +3,7 @@ import { OptionGroup } from "./option-group.model";
 
 export interface Product extends BaseResource {
     name: string,
+    brand: string,
     price?: number,
     discount?: number,
     images?: string[],

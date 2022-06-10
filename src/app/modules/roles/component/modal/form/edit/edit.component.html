@@ -10,7 +10,7 @@
     <button mat-raised-button color="warn" (click)="bsModalRef.hide()" class="me-4">
       Cancel
     </button>
-    <button mat-raised-button color="accent" (click)="submitForm()">
+    <button mat-raised-button color="accent" (click)="submitForm()" [disabled]="loadingSubmit">
       Edit
     </button>
   </div>

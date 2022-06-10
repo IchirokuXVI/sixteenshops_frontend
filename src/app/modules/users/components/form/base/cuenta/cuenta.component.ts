@@ -10,6 +10,7 @@ import { User } from 'src/app/models/user.model';
 import { CropperModalComponent } from 'src/app/modules/shared/components/cropper-modal/cropper-modal.component';
 import { confirmPassword } from 'src/app/modules/shared/validators/confirm-password.validator';
 import { MessageService } from 'primeng/api';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'usuario-form-cuenta[form]',
@@ -43,7 +44,8 @@ export class CuentaComponent implements OnInit {
               private _userServ: UserService,
               private _modalServ: BsModalService,
               private sanitizer: DomSanitizer,
-              private messageServ: MessageService
+              private messageServ: MessageService,
+              private _authServ: AuthService
   ) {
     this.loadingData = new EventEmitter();
     this.imgLoading = false;
@@ -232,5 +234,9 @@ export class CuentaComponent implements OnInit {
 
   get submitted() {
     return this.$submitted?.value;
+  }
+
+  hasPermission(permission: string) {
+    return this._authServ.localUserHasPermission(permission);
   }
 }
