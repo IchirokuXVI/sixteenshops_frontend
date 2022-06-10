@@ -12,4 +12,8 @@ export class ProductService extends BaseResourceService<Product> {
     super(http);
     this.endpoint = 'products';
   }
+
+  get imagesPath(): string {
+    return this.baseUrl + "/productImgs/";
+  }
 }

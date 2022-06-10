@@ -8,7 +8,7 @@
           <th class="text-center"></th>
       </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-product>
+  <ng-template pTemplate="body" let-product let-i="rowIndex">
       <tr>
           <td>
               <span class="p-column-title">
@@ -43,13 +43,14 @@
               </span>
           </td>
           <td class="text-center">
-              <button mat-icon-button color="primary" tooltip="Edit">
+              <button mat-icon-button color="primary" tooltip="Edit" [routerLink]="['.', product._id, 'edit']">
                   <i class="fas fa-pen"></i>
               </button>
-              <button mat-icon-button color="warn" tooltip="Delete">
-                  <i class="fas fa-trash"></i>
+              <button #deleteButton mat-icon-button color="warn" tooltip="Delete" (click)="deleteProduct(deleteButton, product, i)">
+                <i class="fas fa-trash"></i>
               </button>
           </td>
       </tr>
   </ng-template>
 </p-table>
+<p-confirmPopup [autoZIndex]="false" [style]="{ zIndex: '2000' }" [reverse]="true"></p-confirmPopup>

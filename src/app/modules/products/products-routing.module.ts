@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductsComponent } from './products.component';
 import { ListComponent } from './components/list/list.component';
 import { NewComponent } from './components/form/new/new.component';
+import { EditComponent } from './components/form/edit/edit.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
       {
         path: 'new',
         component: NewComponent
+      },
+      {
+        path: ':product/edit',
+        component: EditComponent
       }
     ]
   }

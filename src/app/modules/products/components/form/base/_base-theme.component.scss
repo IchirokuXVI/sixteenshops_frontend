@@ -13,6 +13,11 @@
     border: 1px solid #ccc;
   }
 
+  .delete-img {
+    color: map.get($warn-palette, 'default');
+    border: 1px solid #ccc;
+  }
+
   .discount {
       background-color: map.get($accent-palette, 500);
   }

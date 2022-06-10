@@ -5,5 +5,6 @@ export interface Product extends BaseResource {
     name: string,
     price?: number,
     discount?: number,
+    images?: string[],
     optionGroups: OptionGroup[]
 }

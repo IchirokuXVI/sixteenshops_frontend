@@ -6,18 +6,35 @@
   & .product-img {
     width: 512px;
     height: 512px;
+
+    @media screen and (max-width: 1024px) {
+      width: 384px;
+      height: 384px;
+    }
+
+    @media screen and (max-width: 600px) {
+      width: 256px;
+      height: 256px;
+    }
   }
 
   & .product-images-miniatures {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    flex-wrap: wrap;
 
     & .product-miniature-img {
       width: 64px;
       height: 64px;
       padding: 4px;
       border-radius: 0.25em;
+    }
+
+    & .delete-img {
+      position: absolute;
+      top: 5%;
+      left: 57.5%;
     }
   }
 }

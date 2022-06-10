@@ -1,21 +1,25 @@
 <div class="row" [formGroup]="form">
   <div class="col-lg-10 mx-auto">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-xxl-6">
         <div class="product-images">
-          <img src="assets/img/default-product.png" class="product-img mx-auto" />
+          <img [src]="sanitizeUrl(selectedImg) || 'assets/img/default-product.png'" class="product-img img-fluid mx-auto" />
           <div class="product-images-miniatures">
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
-            <img src="assets/img/default-product.png" class="product-miniature-img" />
+            <span class="d-flex position-relative" *ngFor="let productImg of productImgs; let i = index">
+              <img [src]="sanitizeUrl(productImg)" (click)="selectedImg = productImg" class="product-miniature-img img-fluid" />
+              <button class="delete-img rounded-circle bg-light" color="warn" tooltip="Remove" container="body" (click)="removeImg(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </span>
+            <div *ngIf="productImgs.length < 7" (click)="inputUploadImage.click()" class="product-miniature-img d-flex align-items-center justify-content-center clickable" tooltip="Upload image">
+              <mat-icon>upload</mat-icon>
+            </div>
+            <input #inputUploadImage id="inputAvatar" (change)="openCropModal($event)" type="file"
+                            class="d-none" accept="image/jpeg,image/jpg,image/png">
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-xxl-6">
         <div class="product-heading">
           <h1 class="h4">
             <chip formControlName="name" placeholder="Product name" [background]="false" [editable]="true"
