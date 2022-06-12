@@ -45,6 +45,7 @@ export class ChipComponent implements ControlValueAccessor {
   @Input() showDecreaseIncrease: boolean = false;
 
   @Output() onRemove: EventEmitter<any> = new EventEmitter();
+  @Output() click: EventEmitter<any> = new EventEmitter();
 
   private _onChange!: (val: boolean) => void;
   private _onTouched!: () => void;
@@ -127,6 +128,9 @@ export class ChipComponent implements ControlValueAccessor {
   chipSingleClick() {
     if (this.editable && this.showPlaceholder || this.likeInput) {
       this.focusValueEdit();
+    } else if (this.selectable) {
+      this.active = !this.active;
+      this.click.emit();
     }
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, throwError, debounceTime, finalize, filter, mergeMap, tap, first } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, map, Observable, of, throwError, debounceTime, finalize, filter, mergeMap, switchMap, tap, first } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -104,12 +104,12 @@ export class AuthService {
         customHeaders = customHeaders.append("X-Skip-Interceptor", ''); // Custom header to skip TokenInterceptor
         customHeaders = customHeaders.append("Authorization", 'Bearer ' + token); // Set refresh token in authorization header
         let customOptions = { headers: customHeaders };
+
+        this.refreshTokenInProgress.next(true);
+        this.accessTokenSubject.next(undefined);
+        this.refreshTokenSubject.next(undefined);
+
         return this.http.post(`${this.url}/auth/refresh`, undefined, customOptions).pipe(
-          tap(() => {
-            this.refreshTokenInProgress.next(true);
-            this.accessTokenSubject.next(undefined);
-            this.refreshTokenSubject.next(undefined);
-          }),
           map((res: any) => {
             this.userSubject.next(res.user);
             this.saveTokens(res.access_token, res.refresh_token);
