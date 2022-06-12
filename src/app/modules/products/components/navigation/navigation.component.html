@@ -3,7 +3,7 @@
       <i class="fas fa-list me-2"></i>
       <span>Product list</span>
   </button>
-  <button mat-raised-button class="save-button ms-3" color="accent" [routerLink]="['/products/new']">
+  <button mat-raised-button class="save-button ms-3" color="accent" [routerLink]="['/products/new']" *ngIf="hasPermission('createProduct') | async">
       <i class="fas fa-plus me-2"></i>
       <span>New product</span>
   </button>
