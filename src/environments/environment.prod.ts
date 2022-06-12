@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'sixteenmoons.ichirokuxvi.com:3000'
+  apiUrl: 'sixteenshops.ichirokuxvi.com/api'
 };
