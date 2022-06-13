@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'htpp://sixteenshops.ichirokuxvi.com/api'
+  apiUrl: 'http://sixteenshops.ichirokuxvi.com/api'
 };
